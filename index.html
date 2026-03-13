@@ -1487,6 +1487,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  const seenSections = new Set();
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        if (id && !seenSections.has(id)) {
+          seenSections.add(id);
+          trackEvent('section_view', { section: id });
+        }
+      }
+    });
+  }, { threshold: 0.35 });
+  document.querySelectorAll('section[id]').forEach(el => sectionObserver.observe(el));
+
+  const depths = [25, 50, 75, 90];
+  const fired = new Set();
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    if (height <= 0) return;
+    const pct = Math.round((scrollTop / height) * 100);
+    depths.forEach(d => {
+      if (pct >= d && !fired.has(d)) {
+        fired.add(d);
+        trackEvent('scroll_depth', { percent: d });
+      }
+    });
+  }, { passive: true });
 });
 </script>
 </body>
