@@ -720,6 +720,60 @@ footer {
 footer p { font-size: 12px; font-weight: 400; }
 
 /* ═══════════════════════════════════════════
+   BOTTOM CTA BAR
+═══════════════════════════════════════════ */
+.cta-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 250;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+}
+.cta-bar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.cta-bar-copy {
+  font-size: 13px;
+  color: var(--ink2);
+}
+.cta-bar-copy strong { color: var(--ink); }
+.cta-bar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.cta-bar-btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cta-bar-dismiss {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink2);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+body { padding-bottom: 84px; }
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -1322,6 +1376,16 @@ footer p { font-size: 12px; font-weight: 400; }
   <p>서비스 이용약관 · 개인정보처리방침</p>
 </footer>
 
+<div class="cta-bar" id="bottomCta">
+  <div class="cta-bar-inner">
+    <div class="cta-bar-copy"><strong>포트폴리오 설명 데모</strong>를 먼저 보고 싶다면 지금 신청하세요.</div>
+    <div class="cta-bar-actions">
+      <button class="cta-bar-btn" data-open-form="true" data-cta="bottom_cta">데모 신청</button>
+      <button class="cta-bar-dismiss" type="button" data-dismiss-cta="true">닫기</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 function trackEvent(name, params = {}) {
@@ -1448,6 +1512,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.querySelectorAll('[data-close-form="true"]').forEach(el => {
     el.addEventListener('click', closeContactForm);
+  });
+  const ctaBar = document.getElementById('bottomCta');
+  document.querySelectorAll('[data-dismiss-cta="true"]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (ctaBar) ctaBar.style.display = 'none';
+      trackEvent('cta_dismiss', { cta: 'bottom_cta' });
+    });
   });
   const modal = document.getElementById('contactModal');
   if (modal) {
