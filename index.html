@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PortfolioAI — 모바일 UI 프로토타입</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPPB9W5WYT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GPPB9W5WYT');
+</script>
+<script src="https://t.contentsquare.net/uxa/79438e9d936b7.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -1415,6 +1423,7 @@ function switchScreen(name, btn) {
   document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('s-' + name).classList.add('active');
   btn.classList.add('active');
+  trackEvent('screen_view', { screen_name: name });
 
   // Update flow desc
   const d = flowDescs[name];
@@ -1430,14 +1439,20 @@ function switchScreen(name, btn) {
 function toggleBroker(el) {
   document.querySelectorAll('.broker-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
+  const name = el.querySelector('.broker-name')?.textContent?.trim();
+  if (name) trackEvent('onboarding_select_broker', { broker: name });
 }
 function toggleLevel(el) {
   document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
+  const name = el.querySelector('h4')?.textContent?.trim();
+  if (name) trackEvent('onboarding_select_level', { level: name });
 }
 function toggleMode(btn) {
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  const name = btn.textContent.trim();
+  if (name) trackEvent('report_toggle_mode', { mode: name });
 }
 
 function sendMsg() {
@@ -1446,10 +1461,12 @@ function sendMsg() {
   if (!txt) return;
   addUserMsg(txt);
   f.value = '';
+  trackEvent('qa_send', { source: 'input' });
   setTimeout(() => addAiMsg('잠깐만요, 분석 중이에요... ✦'), 600);
 }
 function sendChip(el) {
   addUserMsg(el.textContent.trim());
+  trackEvent('qa_chip_click', { chip: el.textContent.trim() });
   setTimeout(() => addAiMsg('좋은 질문이에요! 현재 포트폴리오를 기준으로 분석해 드릴게요. 잠깐만요 ✦'), 600);
 }
 function addUserMsg(txt) {
@@ -1462,6 +1479,28 @@ function addAiMsg(txt) {
   area.innerHTML += `<div class="chat-msg ai"><div class="chat-av ai" style="width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px">✦</div><div><div class="chat-bubble">${txt}</div></div></div>`;
   area.scrollTop = area.scrollHeight;
 }
+
+function trackEvent(name, params = {}) {
+  if (typeof gtag === 'function') gtag('event', name, params);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ctas = [
+    { selector: '.btn-full', cta: 'start_portfolio_analysis' },
+    { selector: '.ai-cta', cta: 'ai_explain_cta' },
+    { selector: '.btn-accept', cta: 'rebalance_accept' },
+    { selector: '.btn-later', cta: 'rebalance_later' }
+  ];
+  ctas.forEach(({ selector, cta }) => {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener('click', () => trackEvent('cta_click', { cta }));
+    });
+  });
+
+  document.querySelectorAll('.qa-send-btn').forEach(el => {
+    el.addEventListener('click', () => trackEvent('qa_send', { source: 'button' }));
+  });
+});
 </script>
 </body>
 </html>
