@@ -41,24 +41,6 @@
     <!-- Contentsquare (experience analytics) -->
     <!-- Tag from Contentsquare UI -->
     <script src="https://t.contentsquare.net/uxa/79438e9d936b7.js"></script>
-
-    <!-- Hotjar Tracking Code (optional; only if you also use Hotjar) -->
-    <!-- Hotjar Project / Site ID: 682876 -->
-    <script>
-      (function (h, o, t, j, a, r) {
-        h.hj =
-          h.hj ||
-          function () {
-            (h.hj.q = h.hj.q || []).push(arguments);
-          };
-        h._hjSettings = { hjid: 682876, hjsv: 6 };
-        a = o.getElementsByTagName("head")[0];
-        r = o.createElement("script");
-        r.async = 1;
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
-    </script>
     <style>
       :root {
         --bg: #f7f8fb;
@@ -955,15 +937,6 @@
           } catch (e) {
             // noop
           }
-
-          // Hotjar event
-          try {
-            if (typeof hj === "function") {
-              hj("event", eventName);
-            }
-          } catch (e) {
-            // noop
-          }
         };
 
         const isValidEmail = (value) => {
@@ -996,17 +969,17 @@
         };
 
         joinBetaBtn?.addEventListener("click", () => {
-          track("CTA click", { location: "hero", action: "join_beta" });
+          track("cta_click", { button_location: "hero", action: "join_beta" });
           scrollToId("signup");
           emailInput?.focus({ preventScroll: true });
         });
 
         navJoinBetaBtn?.addEventListener("click", () => {
-          track("CTA click", { location: "nav", action: "join_beta" });
+          track("cta_click", { button_location: "nav", action: "join_beta" });
         });
 
         seeExampleBtn?.addEventListener("click", () => {
-          track("Example portfolio click", { location: "hero" });
+          track("example_portfolio_click", { button_location: "hero" });
           toggleExample(true);
         });
 
@@ -1031,7 +1004,8 @@
             return;
           }
 
-          track("Email submit", { email, experience: experience || "unspecified" });
+          // NOTE: Do not send PII (email) to GA4. Track only non-identifying fields.
+          track("email_submit", { experience: experience || "unspecified" });
           showSuccess();
 
           betaForm.reset();
