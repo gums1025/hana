@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explainable AI Investment Portfolio Explanation Service — understand why an AI portfolio is built the way it is. Join the beta waitlist." />
+    <title>Explainable AI Portfolio — Join Beta</title>
+    <style>
+      :root {
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: rgba(15, 23, 42, 0.10);
+        --shadow: 0 10px 30px rgba(2, 6, 23, 0.10);
+        --shadow-soft: 0 8px 20px rgba(2, 6, 23, 0.08);
+        --brand: #2563eb;
+        --brand-2: #7c3aed;
+        --ok: #16a34a;
+        --danger: #dc2626;
+        --radius: 18px;
+        --max: 1100px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        background: radial-gradient(1200px 600px at 50% -10%, rgba(37, 99, 235, 0.14), transparent 60%),
+                    radial-gradient(900px 500px at 10% 20%, rgba(124, 58, 237, 0.10), transparent 55%),
+                    var(--bg);
+        line-height: 1.5;
+      }
+
+      a { color: inherit; }
+      .container {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        background: rgba(247, 248, 251, 0.75);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .brand-badge {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+      .nav-links a:hover {
+        background: rgba(15, 23, 42, 0.05);
+        color: var(--text);
+      }
+
+      .btn {
+        appearance: none;
+        border: 0;
+        cursor: pointer;
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        user-select: none;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: white;
+        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+      }
+      .btn-primary:hover { box-shadow: 0 18px 42px rgba(37, 99, 235, 0.30); }
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        color: var(--text);
+        box-shadow: 0 10px 20px rgba(2, 6, 23, 0.06);
+      }
+      .btn-secondary:hover { background: #ffffff; }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        color: var(--text);
+      }
+      .btn-ghost:hover { background: rgba(15, 23, 42, 0.04); }
+
+      .section {
+        padding: 72px 0;
+      }
+      .section h2 {
+        margin: 0 0 12px;
+        font-size: clamp(24px, 3vw, 34px);
+        letter-spacing: -0.03em;
+      }
+      .section p.lead {
+        margin: 0 0 26px;
+        color: var(--muted);
+        font-size: 16px;
+        max-width: 62ch;
+      }
+
+      /* HERO */
+      #hero { padding: 54px 0 64px; }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 28px;
+        align-items: center;
+      }
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: clamp(34px, 4.2vw, 56px);
+        line-height: 1.03;
+        letter-spacing: -0.045em;
+      }
+      .hero .subheadline {
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: clamp(16px, 1.8vw, 19px);
+        max-width: 64ch;
+      }
+      .hero-ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 18px 0 14px;
+      }
+      .trust-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+        margin-top: 10px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: 0 10px 18px rgba(2, 6, 23, 0.05);
+      }
+      .dot {
+        width: 10px; height: 10px; border-radius: 99px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      }
+
+      .hero-card {
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .hero-illustration {
+        height: 320px;
+        padding: 18px;
+        display: grid;
+        align-content: center;
+        gap: 14px;
+        background:
+          radial-gradient(900px 400px at 20% 10%, rgba(37, 99, 235, 0.18), transparent 55%),
+          radial-gradient(700px 400px at 80% 30%, rgba(124, 58, 237, 0.14), transparent 55%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.55));
+      }
+      .mini {
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: var(--shadow-soft);
+        padding: 14px;
+      }
+      .mini-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        font-size: 13px;
+      }
+      .chip {
+        font-size: 12px;
+        font-weight: 900;
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: #0b1220;
+        background: rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(37, 99, 235, 0.20);
+      }
+      .bars {
+        display: grid;
+        gap: 10px;
+      }
+      .bar {
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.10);
+        overflow: hidden;
+      }
+      .bar > span {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      }
+      .bar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      /* Cards & grids */
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-soft);
+        padding: 18px;
+        min-height: 140px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        background: rgba(255, 255, 255, 0.72);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: -0.01em;
+        color: rgba(15, 23, 42, 0.86);
+        box-shadow: 0 10px 18px rgba(2, 6, 23, 0.05);
+        margin-bottom: 14px;
+      }
+
+      /* How it works */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-top: 10px;
+      }
+      .step {
+        position: relative;
+        padding: 18px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: var(--shadow-soft);
+      }
+      .step-num {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        display: inline-grid;
+        place-items: center;
+        font-weight: 1000;
+        color: white;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.20);
+        margin-bottom: 10px;
+      }
+      .step h3 { margin: 0 0 8px; font-size: 15px; letter-spacing: -0.02em; }
+      .step p { margin: 0; color: var(--muted); font-weight: 600; }
+
+      /* Example */
+      .example-wrap {
+        margin-top: 18px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+      .example-head {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.55));
+      }
+      .example-head strong { letter-spacing: -0.02em; }
+      .example-body {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .example-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 14px;
+      }
+      .panel {
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        background: rgba(255, 255, 255, 0.75);
+        padding: 14px;
+      }
+      .panel h4 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        letter-spacing: -0.02em;
+      }
+      .alloc {
+        display: grid;
+        gap: 10px;
+      }
+      .alloc-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+      .alloc-item .label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .alloc-item .pct {
+        font-variant-numeric: tabular-nums;
+        color: rgba(15, 23, 42, 0.88);
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .explain-list {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-weight: 650;
+      }
+      .explain-list li { margin: 6px 0; }
+
+      /* Signup */
+      #signup .signup-card {
+        border-radius: calc(var(--radius) + 4px);
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(124, 58, 237, 0.08));
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+      .signup-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px;
+        align-items: start;
+      }
+      form {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+      }
+      label {
+        display: grid;
+        gap: 6px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        font-size: 13px;
+        color: rgba(15, 23, 42, 0.90);
+      }
+      input, select {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        background: rgba(255, 255, 255, 0.85);
+        outline: none;
+        font-weight: 700;
+        color: var(--text);
+      }
+      input:focus, select:focus {
+        border-color: rgba(37, 99, 235, 0.55);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 10px;
+      }
+      .helper {
+        color: var(--muted);
+        font-weight: 650;
+        font-size: 13px;
+        margin: 0;
+      }
+      .error {
+        display: none;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 14px;
+        color: #7f1d1d;
+        background: rgba(220, 38, 38, 0.10);
+        border: 1px solid rgba(220, 38, 38, 0.18);
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .success {
+        display: none;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 14px;
+        color: #064e3b;
+        background: rgba(22, 163, 74, 0.10);
+        border: 1px solid rgba(22, 163, 74, 0.18);
+        font-weight: 850;
+        font-size: 13px;
+      }
+      .fineprint {
+        color: rgba(71, 85, 105, 0.92);
+        font-weight: 650;
+        font-size: 12.5px;
+        margin: 10px 0 0;
+      }
+      .benefits {
+        display: grid;
+        gap: 10px;
+      }
+      .benefit {
+        display: grid;
+        grid-template-columns: 18px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+      }
+      .check {
+        width: 18px; height: 18px;
+        border-radius: 6px;
+        background: rgba(37, 99, 235, 0.14);
+        border: 1px solid rgba(37, 99, 235, 0.20);
+        position: relative;
+        margin-top: 2px;
+      }
+      .check::after {
+        content: "";
+        position: absolute;
+        left: 5px; top: 3px;
+        width: 6px; height: 10px;
+        border-right: 2px solid rgba(37, 99, 235, 0.95);
+        border-bottom: 2px solid rgba(37, 99, 235, 0.95);
+        transform: rotate(40deg);
+      }
+      .benefit strong { display: block; letter-spacing: -0.02em; }
+      .benefit span { color: var(--muted); font-weight: 650; font-size: 13px; }
+
+      footer {
+        padding: 34px 0;
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
+        color: rgba(71, 85, 105, 0.95);
+      }
+      .footer-grid {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .small { font-size: 13px; font-weight: 650; }
+
+      /* Responsive */
+      @media (max-width: 960px) {
+        .hero-grid { grid-template-columns: 1fr; }
+        .hero-illustration { height: 300px; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .grid-2 { grid-template-columns: 1fr; }
+        .steps { grid-template-columns: 1fr; }
+        .example-grid { grid-template-columns: 1fr; }
+        .signup-grid { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 520px) {
+        .nav-links { display: none; }
+        .form-row { grid-template-columns: 1fr; }
+        .btn { width: 100%; }
+        .hero-ctas { gap: 10px; }
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .btn { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav class="nav" aria-label="Primary navigation">
+          <div class="brand">
+            <span class="brand-badge" aria-hidden="true"></span>
+            <span>Explainable AI Portfolio</span>
+          </div>
+          <div class="nav-links">
+            <a href="#problem">Problem</a>
+            <a href="#solution">Solution</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#value">Value</a>
+            <a href="#signup">Beta</a>
+          </div>
+          <a class="btn btn-primary" href="#signup" id="navJoinBetaBtn">Join Beta</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO (Attention) -->
+      <section class="section hero" id="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <div>
+              <div class="kicker"><span class="dot" aria-hidden="true"></span> Market validation beta — built for beginner investors</div>
+              <h1>AI recommended your portfolio.<br />Do you actually understand it?</h1>
+              <p class="subheadline">Most investment apps show the result. We explain the reason behind the portfolio.</p>
+
+              <div class="hero-ctas">
+                <button class="btn btn-primary" id="joinBetaBtn" type="button">Join Beta</button>
+                <button class="btn btn-secondary" id="seeExampleBtn" type="button">See Example Portfolio</button>
+              </div>
+
+              <div class="trust-row" aria-label="Product benefits">
+                <span class="pill"><span class="dot" aria-hidden="true"></span> Plain-English strategy</span>
+                <span class="pill"><span class="dot" aria-hidden="true"></span> Risk + return explained</span>
+                <span class="pill"><span class="dot" aria-hidden="true"></span> Ask questions anytime</span>
+              </div>
+            </div>
+
+            <div class="hero-card" aria-label="Illustration placeholder">
+              <div class="hero-illustration">
+                <div class="mini" aria-label="Portfolio allocation preview">
+                  <div class="mini-title">
+                    <span>AI Portfolio (example)</span>
+                    <span class="chip">Balanced</span>
+                  </div>
+                  <div class="bars" aria-hidden="true">
+                    <div class="bar-row"><span>Stocks</span><span>60%</span></div>
+                    <div class="bar"><span style="width: 60%"></span></div>
+                    <div class="bar-row"><span>Bonds</span><span>30%</span></div>
+                    <div class="bar"><span style="width: 30%"></span></div>
+                    <div class="bar-row"><span>Cash</span><span>10%</span></div>
+                    <div class="bar"><span style="width: 10%"></span></div>
+                  </div>
+                </div>
+                <div class="mini" aria-label="Explanation preview">
+                  <div class="mini-title">
+                    <span>Why this portfolio?</span>
+                    <span class="chip">Explainable</span>
+                  </div>
+                  <p style="margin: 0; color: var(--muted); font-weight: 650; font-size: 13px;">
+                    Designed for steady growth with controlled swings. Bonds reduce volatility; cash keeps flexibility for dips.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROBLEM (Interest) -->
+      <section class="section" id="problem">
+        <div class="container">
+          <h2>Why beginner investors struggle</h2>
+          <p class="lead">If you can’t explain your portfolio, it’s hard to trust it — and even harder to learn from it.</p>
+
+          <div class="grid-3" role="list">
+            <article class="card" role="listitem">
+              <h3>“Why were these assets selected?”</h3>
+              <p>Investors see allocations but not the reasoning behind each asset choice.</p>
+            </article>
+            <article class="card" role="listitem">
+              <h3>“I can’t explain my strategy.”</h3>
+              <p>Without a clear strategy, it’s difficult to stay consistent during market swings.</p>
+            </article>
+            <article class="card" role="listitem">
+              <h3>Robo-advisors lack explanation</h3>
+              <p>Portfolios feel like a black box — results without context.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLUTION -->
+      <section class="section" id="solution">
+        <div class="container">
+          <h2>Explainable AI Portfolio</h2>
+          <p class="lead">We convert AI portfolios into understandable investment strategies — so you can learn what you’re doing, not just copy the output.</p>
+
+          <div class="grid-2" role="list">
+            <article class="card" role="listitem">
+              <h3>Explainable Portfolio</h3>
+              <p style="margin-bottom: 12px;">Turn allocations into a story you can repeat in one minute.</p>
+              <ul class="explain-list">
+                <li>Asset allocation explanation</li>
+                <li>Risk explanation</li>
+                <li>Expected return explanation</li>
+              </ul>
+            </article>
+            <article class="card" role="listitem">
+              <h3>Investment Q&amp;A Chatbot</h3>
+              <p style="margin-bottom: 12px;">Ask questions in your own words and learn faster.</p>
+              <ul class="explain-list">
+                <li>Ask portfolio questions</li>
+                <li>Learn financial terms</li>
+                <li>Understand market context</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="example-wrap" id="example" aria-label="Example portfolio section" hidden>
+            <div class="example-head">
+              <div>
+                <strong>Example Portfolio</strong>
+                <span style="color: var(--muted); font-weight: 700; font-size: 13px;">(Illustrative only — not financial advice)</span>
+              </div>
+              <button class="btn btn-ghost" type="button" id="closeExampleBtn" aria-controls="example" aria-expanded="true">
+                Close
+              </button>
+            </div>
+            <div class="example-body">
+              <div class="example-grid">
+                <div class="panel">
+                  <h4>AI allocation (sample)</h4>
+                  <div class="alloc" aria-label="Allocation breakdown">
+                    <div class="alloc-item">
+                      <div class="label"><span>Global Stocks (ETF)</span><span class="pct">55%</span></div>
+                      <div class="bar" aria-hidden="true"><span style="width: 55%"></span></div>
+                    </div>
+                    <div class="alloc-item">
+                      <div class="label"><span>Investment-Grade Bonds</span><span class="pct">35%</span></div>
+                      <div class="bar" aria-hidden="true"><span style="width: 35%"></span></div>
+                    </div>
+                    <div class="alloc-item">
+                      <div class="label"><span>Cash</span><span class="pct">10%</span></div>
+                      <div class="bar" aria-hidden="true"><span style="width: 10%"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h4>Explanation (what you’d read)</h4>
+                  <ul class="explain-list">
+                    <li><strong>Goal:</strong> balanced growth for a beginner with smaller capital.</li>
+                    <li><strong>Why 55% stocks:</strong> long-term upside, diversified globally to reduce single-country risk.</li>
+                    <li><strong>Why 35% bonds:</strong> smoother ride so you’re less likely to panic-sell.</li>
+                    <li><strong>Why 10% cash:</strong> flexibility for emergencies and buying dips.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h4>Try asking (examples)</h4>
+                <ul class="explain-list">
+                  <li>“What happens if stocks fall 20%?”</li>
+                  <li>“Why not 100% stocks if I’m young?”</li>
+                  <li>“Explain bonds like I’m new.”</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section" id="how-it-works">
+        <div class="container">
+          <h2>How it works</h2>
+          <p class="lead">A simple flow designed for learning — not just receiving an output.</p>
+
+          <div class="steps" role="list">
+            <article class="step" role="listitem">
+              <div class="step-num" aria-hidden="true">1</div>
+              <h3>View AI portfolio example</h3>
+              <p>See a realistic allocation and risk profile designed for beginners.</p>
+            </article>
+            <article class="step" role="listitem">
+              <div class="step-num" aria-hidden="true">2</div>
+              <h3>Read portfolio explanation</h3>
+              <p>Understand the “why” behind every allocation decision.</p>
+            </article>
+            <article class="step" role="listitem">
+              <div class="step-num" aria-hidden="true">3</div>
+              <h3>Ask questions to AI chatbot</h3>
+              <p>Clarify concepts, terms, and market context in plain English.</p>
+            </article>
+            <article class="step" role="listitem">
+              <div class="step-num" aria-hidden="true">4</div>
+              <h3>Decide investment strategy</h3>
+              <p>Choose with confidence because you understand the trade-offs.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- VALUE -->
+      <section class="section" id="value">
+        <div class="container">
+          <h2>What you gain</h2>
+          <p class="lead">The goal isn’t just a portfolio — it’s clarity you can act on.</p>
+
+          <div class="grid-3" role="list">
+            <article class="card" role="listitem">
+              <h3>Investment Understanding</h3>
+              <p>Understand your portfolio as strategy — not a random list of assets.</p>
+            </article>
+            <article class="card" role="listitem">
+              <h3>Better Investment Decisions</h3>
+              <p>Make decisions based on understanding, especially during volatility.</p>
+            </article>
+            <article class="card" role="listitem">
+              <h3>Learn While Investing</h3>
+              <p>Turn investing into a learning experience you can build on over time.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIGNUP (Action) -->
+      <section class="section" id="signup">
+        <div class="container">
+          <div class="signup-card">
+            <div class="signup-grid">
+              <div>
+                <h2>Join the beta waitlist</h2>
+                <p class="lead" style="margin-bottom: 18px;">
+                  We’re validating demand before building the MVP. If this solves your pain, leave your email — we’ll invite early users first.
+                </p>
+
+                <form id="betaForm" novalidate>
+                  <p class="error" id="formError" role="alert"></p>
+                  <p class="success" id="formSuccess" role="status">Thank you for joining the beta waitlist.</p>
+
+                  <div class="form-row">
+                    <label>
+                      Email address <span aria-hidden="true" style="color: var(--danger)">*</span>
+                      <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+                    </label>
+                    <label>
+                      Investment experience (optional)
+                      <select id="experience" name="experience">
+                        <option value="">Select</option>
+                        <option value="none">No experience</option>
+                        <option value="lt1">Less than 1 year</option>
+                        <option value="1to3">1-3 years</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <button class="btn btn-primary" type="submit" id="joinBetaAccessBtn">Join Beta Access</button>
+                  <p class="fineprint">No spam. Just beta access updates. You can unsubscribe anytime.</p>
+                </form>
+              </div>
+
+              <aside class="benefits" aria-label="Beta benefits">
+                <div class="benefit">
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <strong>See explanations, not just results</strong>
+                    <span>Understand allocations, risk, and expected return in plain English.</span>
+                  </div>
+                </div>
+                <div class="benefit">
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <strong>Ask “why” anytime</strong>
+                    <span>Use Q&amp;A to learn terms and reasoning behind recommendations.</span>
+                  </div>
+                </div>
+                <div class="benefit">
+                  <span class="check" aria-hidden="true"></span>
+                  <div>
+                    <strong>Built for beginners in their 20s</strong>
+                    <span>Simple, educational flow for early career investors with small capital.</span>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="section" id="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="brand">
+            <span class="brand-badge" aria-hidden="true"></span>
+            <span>Explainable AI Portfolio</span>
+          </div>
+          <div class="small">© <span id="year"></span> Market validation landing page. Not financial advice.</div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const $ = (sel) => document.querySelector(sel);
+        const joinBetaBtn = $("#joinBetaBtn");
+        const navJoinBetaBtn = $("#navJoinBetaBtn");
+        const seeExampleBtn = $("#seeExampleBtn");
+        const closeExampleBtn = $("#closeExampleBtn");
+        const exampleWrap = $("#example");
+
+        const betaForm = $("#betaForm");
+        const emailInput = $("#email");
+        const expSelect = $("#experience");
+        const formError = $("#formError");
+        const formSuccess = $("#formSuccess");
+
+        const scrollToId = (id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+
+        const track = (eventName, payload) => {
+          console.log("[track]", eventName, payload || {});
+        };
+
+        const isValidEmail = (value) => {
+          const v = String(value || "").trim();
+          if (!v) return false;
+          return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
+        };
+
+        const showError = (msg) => {
+          formError.textContent = msg;
+          formError.style.display = "block";
+          formSuccess.style.display = "none";
+        };
+
+        const clearError = () => {
+          formError.textContent = "";
+          formError.style.display = "none";
+        };
+
+        const showSuccess = () => {
+          formSuccess.style.display = "block";
+          formError.style.display = "none";
+        };
+
+        const toggleExample = (open) => {
+          const isOpen = !!open;
+          exampleWrap.hidden = !isOpen;
+          if (closeExampleBtn) closeExampleBtn.setAttribute("aria-expanded", String(isOpen));
+          if (isOpen) scrollToId("solution");
+        };
+
+        joinBetaBtn?.addEventListener("click", () => {
+          track("CTA click", { location: "hero", action: "join_beta" });
+          scrollToId("signup");
+          emailInput?.focus({ preventScroll: true });
+        });
+
+        navJoinBetaBtn?.addEventListener("click", () => {
+          track("CTA click", { location: "nav", action: "join_beta" });
+        });
+
+        seeExampleBtn?.addEventListener("click", () => {
+          track("Example portfolio click", { location: "hero" });
+          toggleExample(true);
+        });
+
+        closeExampleBtn?.addEventListener("click", () => {
+          toggleExample(false);
+        });
+
+        emailInput?.addEventListener("input", () => {
+          if (formError.style.display === "block") clearError();
+        });
+
+        betaForm?.addEventListener("submit", (e) => {
+          e.preventDefault();
+          clearError();
+
+          const email = (emailInput?.value || "").trim();
+          const experience = expSelect?.value || "";
+
+          if (!isValidEmail(email)) {
+            showError("Please enter a valid email address.");
+            emailInput?.focus();
+            return;
+          }
+
+          track("Email submit", { email, experience: experience || "unspecified" });
+          showSuccess();
+
+          betaForm.reset();
+          setTimeout(() => {
+            formSuccess.style.display = "none";
+          }, 6500);
+        });
+
+        $("#year").textContent = String(new Date().getFullYear());
+      })();
+    </script>
+  </body>
+</html>
+
