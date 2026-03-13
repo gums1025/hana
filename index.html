@@ -1,1080 +1,1467 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Explainable AI portfolio explanations for beginner investors. Understand why each asset is in your AI‑picked portfolio and learn investment strategy as you go." />
-    <title>Explainable AI Portfolio — Understand Your AI‑Picked Investments</title>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortfolioAI — 모바일 UI 프로토타입</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Canonical & basic SEO -->
-    <link rel="canonical" href="https://hana-rxm6.vercel.app/" />
-    <meta name="robots" content="index,follow" />
+<style>
+/* ══════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════ */
+:root {
+  --bg-page: #f0f2f7;
+  --phone-bg: #ffffff;
+  --bg1: #f8f9fb;
+  --bg2: #f0f2f6;
+  --bg3: #e8ebf2;
 
-    <!-- Open Graph (link previews) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://hana-rxm6.vercel.app/" />
-    <meta property="og:title" content="Explainable AI Portfolio — Understand Your AI‑Picked Investments" />
-    <meta property="og:description" content="AI recommended your portfolio. We explain the why — allocations, risk, and expected return — in plain language for beginner investors." />
-    <meta property="og:site_name" content="Explainable AI Portfolio" />
-    <!-- NOTE: og:image 경로는 배포 도메인 기준 정적 이미지(/og-image.png)를 가정합니다. -->
-    <meta property="og:image" content="https://hana-rxm6.vercel.app/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+  --ink: #12151c;
+  --ink2: #454d60;
+  --ink3: #8892a4;
+  --ink4: #b8c0ce;
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Explainable AI Portfolio — Understand Your AI‑Picked Investments" />
-    <meta name="twitter:description" content="See an AI portfolio, read the explanation, and learn the strategy behind it. Built for beginner investors in their 20s." />
-    <meta name="twitter:image" content="https://hana-rxm6.vercel.app/og-image.png" />
+  --blue: #3b6ff0;
+  --blue-light: #e8eeff;
+  --blue-mid: #c5d3fc;
+  --green: #00b87a;
+  --green-light: #e0f7ef;
+  --red: #f04560;
+  --red-light: #fdeaed;
+  --gold: #e8a020;
+  --gold-light: #fef3e0;
+  --purple: #7c5fe6;
+  --purple-light: #ede9ff;
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPPB9W5WYT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-GPPB9W5WYT");
-    </script>
+  --shadow-sm: 0 1px 4px rgba(18,21,28,0.06);
+  --shadow-md: 0 4px 16px rgba(18,21,28,0.10);
+  --shadow-lg: 0 12px 40px rgba(18,21,28,0.14);
 
-    <!-- Contentsquare (experience analytics) -->
-    <!-- Tag from Contentsquare UI -->
-    <script src="https://t.contentsquare.net/uxa/79438e9d936b7.js"></script>
-    <style>
-      :root {
-        --bg: #f7f8fb;
-        --surface: #ffffff;
-        --text: #0f172a;
-        --muted: #475569;
-        --border: rgba(15, 23, 42, 0.10);
-        --shadow: 0 10px 30px rgba(2, 6, 23, 0.10);
-        --shadow-soft: 0 8px 20px rgba(2, 6, 23, 0.08);
-        --brand: #2563eb;
-        --brand-2: #7c3aed;
-        --ok: #16a34a;
-        --danger: #dc2626;
-        --radius: 18px;
-        --max: 1100px;
-      }
+  --r: 16px;
+  --r-sm: 10px;
+  --r-xs: 7px;
 
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        color: var(--text);
-        background: radial-gradient(1200px 600px at 50% -10%, rgba(37, 99, 235, 0.14), transparent 60%),
-                    radial-gradient(900px 500px at 10% 20%, rgba(124, 58, 237, 0.10), transparent 55%),
-                    var(--bg);
-        line-height: 1.5;
-      }
+  --font-display: 'Noto Serif KR', serif;
+  --font-body: 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
 
-      a { color: inherit; }
-      .container {
-        max-width: var(--max);
-        margin: 0 auto;
-        padding: 0 20px;
-      }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        backdrop-filter: blur(10px);
-        background: rgba(247, 248, 251, 0.75);
-        border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-      }
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 0;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-      }
-      .brand-badge {
-        width: 34px;
-        height: 34px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
-      }
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        color: var(--muted);
-        font-weight: 600;
-        font-size: 14px;
-      }
-      .nav-links a {
-        text-decoration: none;
-        padding: 8px 10px;
-        border-radius: 10px;
-      }
-      .nav-links a:hover {
-        background: rgba(15, 23, 42, 0.05);
-        color: var(--text);
-      }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 60px;
+}
 
-      .btn {
-        appearance: none;
-        border: 0;
-        cursor: pointer;
-        border-radius: 14px;
-        padding: 12px 16px;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease, border-color 120ms ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        text-decoration: none;
-        user-select: none;
-      }
-      .btn:active { transform: translateY(1px); }
-      .btn-primary {
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-        color: white;
-        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
-      }
-      .btn-primary:hover { box-shadow: 0 18px 42px rgba(37, 99, 235, 0.30); }
-      .btn-secondary {
-        background: rgba(255, 255, 255, 0.75);
-        border: 1px solid rgba(15, 23, 42, 0.12);
-        color: var(--text);
-        box-shadow: 0 10px 20px rgba(2, 6, 23, 0.06);
-      }
-      .btn-secondary:hover { background: #ffffff; }
-      .btn-ghost {
-        background: transparent;
-        border: 1px solid rgba(15, 23, 42, 0.12);
-        color: var(--text);
-      }
-      .btn-ghost:hover { background: rgba(15, 23, 42, 0.04); }
+/* ══════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════ */
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.page-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-light);
+  border: 1px solid var(--blue-mid);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 11px; font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.page-sub {
+  font-size: 14px;
+  color: var(--ink3);
+  font-weight: 400;
+}
 
-      .section {
-        padding: 72px 0;
-      }
-      .section h2 {
-        margin: 0 0 12px;
-        font-size: clamp(24px, 3vw, 34px);
-        letter-spacing: -0.03em;
-      }
-      .section p.lead {
-        margin: 0 0 26px;
-        color: var(--muted);
-        font-size: 16px;
-        max-width: 62ch;
-      }
+/* ══════════════════════════════════════
+   SCREEN NAV TABS (above phones)
+══════════════════════════════════════ */
+.screen-nav {
+  display: flex; gap: 8px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.snav-btn {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.snav-btn.active {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(59,111,240,0.3);
+}
 
-      /* HERO */
-      #hero { padding: 54px 0 64px; }
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 28px;
-        align-items: center;
-      }
-      .hero h1 {
-        margin: 0 0 12px;
-        font-size: clamp(34px, 4.2vw, 56px);
-        line-height: 1.03;
-        letter-spacing: -0.045em;
-      }
-      .hero .subheadline {
-        margin: 0 0 22px;
-        color: var(--muted);
-        font-size: clamp(16px, 1.8vw, 19px);
-        max-width: 64ch;
-      }
-      .hero-ctas {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin: 18px 0 14px;
-      }
-      .trust-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-        color: var(--muted);
-        font-weight: 700;
-        font-size: 13px;
-        margin-top: 10px;
-      }
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.75);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: 0 10px 18px rgba(2, 6, 23, 0.05);
-      }
-      .dot {
-        width: 10px; height: 10px; border-radius: 99px;
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      }
+/* ══════════════════════════════════════
+   PHONE FRAME
+══════════════════════════════════════ */
+.phone-wrap {
+  position: relative;
+  width: 375px;
+  flex-shrink: 0;
+}
+.phone-frame {
+  background: #1a1a1e;
+  border-radius: 50px;
+  padding: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 30px 80px rgba(0,0,0,0.35),
+    0 60px 120px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+}
+.phone-notch {
+  width: 120px; height: 34px;
+  background: #1a1a1e;
+  border-radius: 0 0 22px 22px;
+  margin: 0 auto 0;
+  position: absolute;
+  top: 14px; left: 50%; transform: translateX(-50%);
+  z-index: 10;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.notch-cam { width: 12px; height: 12px; background: #2a2a2e; border-radius: 50%; border: 2px solid #333; }
+.notch-speaker { width: 48px; height: 5px; background: #2a2a2e; border-radius: 3px; }
+.phone-screen {
+  background: var(--phone-bg);
+  border-radius: 38px;
+  overflow: hidden;
+  height: 780px;
+  position: relative;
+}
+.phone-status {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 52px 24px 8px;
+  background: var(--phone-bg);
+  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+}
+.status-time { font-size: 15px; font-weight: 700; color: var(--ink); font-family: var(--font-mono); }
+.status-icons { display: flex; gap: 6px; align-items: center; }
+.status-icon { font-size: 12px; color: var(--ink); }
 
-      .hero-card {
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-      .hero-illustration {
-        height: 320px;
-        padding: 18px;
-        display: grid;
-        align-content: center;
-        gap: 14px;
-        background:
-          radial-gradient(900px 400px at 20% 10%, rgba(37, 99, 235, 0.18), transparent 55%),
-          radial-gradient(700px 400px at 80% 30%, rgba(124, 58, 237, 0.14), transparent 55%),
-          linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.55));
-      }
-      .mini {
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.75);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: var(--shadow-soft);
-        padding: 14px;
-      }
-      .mini-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 10px;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-        font-size: 13px;
-      }
-      .chip {
-        font-size: 12px;
-        font-weight: 900;
-        padding: 6px 10px;
-        border-radius: 999px;
-        color: #0b1220;
-        background: rgba(37, 99, 235, 0.12);
-        border: 1px solid rgba(37, 99, 235, 0.20);
-      }
-      .bars {
-        display: grid;
-        gap: 10px;
-      }
-      .bar {
-        height: 10px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.10);
-        overflow: hidden;
-      }
-      .bar > span {
-        display: block;
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      }
-      .bar-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        font-size: 12px;
-        color: var(--muted);
-        font-weight: 700;
-      }
+/* ══════════════════════════════════════
+   SCREEN PANELS
+══════════════════════════════════════ */
+.screen { display: none; flex-direction: column; height: 100%; padding-top: 96px; }
+.screen.active { display: flex; }
+.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.scroll-area::-webkit-scrollbar { display: none; }
 
-      /* Cards & grids */
-      .grid-3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-      .grid-2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-soft);
-        padding: 18px;
-        min-height: 140px;
-      }
-      .card h3 {
-        margin: 0 0 8px;
-        font-size: 16px;
-        letter-spacing: -0.02em;
-      }
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        font-weight: 600;
-      }
-      .kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        background: rgba(255, 255, 255, 0.72);
-        font-size: 13px;
-        font-weight: 900;
-        letter-spacing: -0.01em;
-        color: rgba(15, 23, 42, 0.86);
-        box-shadow: 0 10px 18px rgba(2, 6, 23, 0.05);
-        margin-bottom: 14px;
-      }
+/* ══════════════════════════════════════
+   ① 온보딩 화면
+══════════════════════════════════════ */
+#s-onboarding {
+  background: linear-gradient(160deg, #f0f4ff 0%, #ffffff 60%);
+  padding-top: 0;
+}
+.onboard-hero {
+  padding: 80px 28px 28px;
+  text-align: center;
+}
+.onboard-icon-wrap {
+  width: 72px; height: 72px;
+  background: var(--blue);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 24px rgba(59,111,240,0.35);
+}
+.onboard-hero h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+.onboard-hero p { font-size: 14px; color: var(--ink3); line-height: 1.6; font-weight: 400; }
 
-      /* How it works */
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        margin-top: 10px;
-      }
-      .step {
-        position: relative;
-        padding: 18px;
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: var(--shadow-soft);
-      }
-      .step-num {
-        width: 38px;
-        height: 38px;
-        border-radius: 14px;
-        display: inline-grid;
-        place-items: center;
-        font-weight: 1000;
-        color: white;
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.20);
-        margin-bottom: 10px;
-      }
-      .step h3 { margin: 0 0 8px; font-size: 15px; letter-spacing: -0.02em; }
-      .step p { margin: 0; color: var(--muted); font-weight: 600; }
+.onboard-body { padding: 0 20px 28px; flex: 1; }
 
-      /* Example */
-      .example-wrap {
-        margin-top: 18px;
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.86);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: var(--shadow-soft);
-        overflow: hidden;
-      }
-      .example-head {
-        padding: 14px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.55));
-      }
-      .example-head strong { letter-spacing: -0.02em; }
-      .example-body {
-        padding: 16px;
-        display: grid;
-        gap: 12px;
-      }
-      .example-grid {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 14px;
-      }
-      .panel {
-        border-radius: 16px;
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        background: rgba(255, 255, 255, 0.75);
-        padding: 14px;
-      }
-      .panel h4 {
-        margin: 0 0 10px;
-        font-size: 14px;
-        letter-spacing: -0.02em;
-      }
-      .alloc {
-        display: grid;
-        gap: 10px;
-      }
-      .alloc-item {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        align-items: center;
-      }
-      .alloc-item .label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        color: var(--muted);
-        font-weight: 800;
-        font-size: 12px;
-      }
-      .alloc-item .pct {
-        font-variant-numeric: tabular-nums;
-        color: rgba(15, 23, 42, 0.88);
-        font-weight: 900;
-        font-size: 12px;
-      }
-      .explain-list {
-        margin: 0;
-        padding-left: 18px;
-        color: var(--muted);
-        font-weight: 650;
-      }
-      .explain-list li { margin: 6px 0; }
+.section-label-sm {
+  font-size: 11px; font-weight: 700;
+  color: var(--ink3);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
 
-      /* Signup */
-      #signup .signup-card {
-        border-radius: calc(var(--radius) + 4px);
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(124, 58, 237, 0.08));
-        border: 1px solid rgba(15, 23, 42, 0.10);
-        box-shadow: var(--shadow);
-        padding: 22px;
-      }
-      .signup-grid {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 18px;
-        align-items: start;
-      }
-      form {
-        display: grid;
-        gap: 12px;
-        margin: 0;
-      }
-      label {
-        display: grid;
-        gap: 6px;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        font-size: 13px;
-        color: rgba(15, 23, 42, 0.90);
-      }
-      input, select {
-        width: 100%;
-        padding: 12px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(15, 23, 42, 0.14);
-        background: rgba(255, 255, 255, 0.85);
-        outline: none;
-        font-weight: 700;
-        color: var(--text);
-      }
-      input:focus, select:focus {
-        border-color: rgba(37, 99, 235, 0.55);
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-      }
-      .form-row {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 10px;
-      }
-      .helper {
-        color: var(--muted);
-        font-weight: 650;
-        font-size: 13px;
-        margin: 0;
-      }
-      .error {
-        display: none;
-        margin: 0;
-        padding: 10px 12px;
-        border-radius: 14px;
-        color: #7f1d1d;
-        background: rgba(220, 38, 38, 0.10);
-        border: 1px solid rgba(220, 38, 38, 0.18);
-        font-weight: 800;
-        font-size: 13px;
-      }
-      .success {
-        display: none;
-        margin: 0;
-        padding: 10px 12px;
-        border-radius: 14px;
-        color: #064e3b;
-        background: rgba(22, 163, 74, 0.10);
-        border: 1px solid rgba(22, 163, 74, 0.18);
-        font-weight: 850;
-        font-size: 13px;
-      }
-      .fineprint {
-        color: rgba(71, 85, 105, 0.92);
-        font-weight: 650;
-        font-size: 12.5px;
-        margin: 10px 0 0;
-      }
-      .benefits {
-        display: grid;
-        gap: 10px;
-      }
-      .benefit {
-        display: grid;
-        grid-template-columns: 18px 1fr;
-        gap: 10px;
-        align-items: start;
-        padding: 12px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.75);
-        border: 1px solid rgba(15, 23, 42, 0.10);
-      }
-      .check {
-        width: 18px; height: 18px;
-        border-radius: 6px;
-        background: rgba(37, 99, 235, 0.14);
-        border: 1px solid rgba(37, 99, 235, 0.20);
-        position: relative;
-        margin-top: 2px;
-      }
-      .check::after {
-        content: "";
-        position: absolute;
-        left: 5px; top: 3px;
-        width: 6px; height: 10px;
-        border-right: 2px solid rgba(37, 99, 235, 0.95);
-        border-bottom: 2px solid rgba(37, 99, 235, 0.95);
-        transform: rotate(40deg);
-      }
-      .benefit strong { display: block; letter-spacing: -0.02em; }
-      .benefit span { color: var(--muted); font-weight: 650; font-size: 13px; }
+.broker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.broker-card {
+  background: #fff;
+  border: 1.5px solid var(--bg3);
+  border-radius: var(--r-sm);
+  padding: 16px 12px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow-sm);
+}
+.broker-card.selected {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+.broker-logo { width: 32px; height: 32px; border-radius: 8px; display:flex; align-items:center;justify-content:center; font-size: 16px; }
+.broker-name { font-size: 13px; font-weight: 600; color: var(--ink); }
 
-      footer {
-        padding: 34px 0;
-        border-top: 1px solid rgba(15, 23, 42, 0.08);
-        color: rgba(71, 85, 105, 0.95);
-      }
-      .footer-grid {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .small { font-size: 13px; font-weight: 650; }
+.invest-level-wrap { margin-bottom: 24px; }
+.level-options { display: flex; flex-direction: column; gap: 8px; }
+.level-opt {
+  background: #fff;
+  border: 1.5px solid var(--bg3);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow-sm);
+}
+.level-opt.selected { border-color: var(--blue); background: var(--blue-light); }
+.level-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink4); transition: all .2s; flex-shrink: 0; }
+.level-opt.selected .level-dot { background: var(--blue); border-color: var(--blue); }
+.level-text h4 { font-size: 14px; font-weight: 600; color: var(--ink); }
+.level-text p { font-size: 12px; color: var(--ink3); font-weight: 400; }
 
-      /* Responsive */
-      @media (max-width: 960px) {
-        .hero-grid { grid-template-columns: 1fr; }
-        .hero-illustration { height: 300px; }
-        .grid-3 { grid-template-columns: 1fr; }
-        .grid-2 { grid-template-columns: 1fr; }
-        .steps { grid-template-columns: 1fr; }
-        .example-grid { grid-template-columns: 1fr; }
-        .signup-grid { grid-template-columns: 1fr; }
-      }
-      @media (max-width: 520px) {
-        .nav-links { display: none; }
-        .form-row { grid-template-columns: 1fr; }
-        .btn { width: 100%; }
-        .hero-ctas { gap: 10px; }
-      }
+.btn-full {
+  width: 100%;
+  padding: 16px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(59,111,240,0.35);
+  letter-spacing: -0.2px;
+}
 
-      /* Reduced motion */
-      @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
-        .btn { transition: none; }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <nav class="nav" aria-label="Primary navigation">
-          <div class="brand">
-            <span class="brand-badge" aria-hidden="true"></span>
-            <span>Explainable AI Portfolio</span>
-          </div>
-          <div class="nav-links">
-            <a href="#problem">Problem</a>
-            <a href="#solution">Solution</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#value">Value</a>
-            <a href="#signup">Beta</a>
-          </div>
-          <a class="btn btn-primary" href="#signup" id="navJoinBetaBtn">Join Beta</a>
-        </nav>
+/* ══════════════════════════════════════
+   ② 포트폴리오 분석
+══════════════════════════════════════ */
+#s-portfolio { background: var(--bg1); }
+
+.app-header {
+  padding: 0 20px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.app-header h1 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+.icon-btn {
+  width: 36px; height: 36px;
+  background: #fff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+  cursor: pointer;
+}
+
+.pf-card {
+  margin: 0 16px 16px;
+  background: var(--blue);
+  border-radius: 20px;
+  padding: 22px 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(59,111,240,0.35);
+}
+.pf-card::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.pf-card::after {
+  content: '';
+  position: absolute; bottom: -30px; left: 20px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+}
+.pf-label { font-size: 12px; opacity: 0.7; margin-bottom: 6px; font-weight: 400; }
+.pf-amount { font-size: 30px; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; font-family: var(--font-display); }
+.pf-stats { display: flex; gap: 24px; }
+.pf-stat-label { font-size: 11px; opacity: 0.65; margin-bottom: 3px; }
+.pf-stat-val { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+.pf-stat-val.green { color: #5fffc4; }
+
+.chart-section { margin: 0 16px 16px; }
+.chart-card {
+  background: #fff;
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+}
+.chart-card-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
+
+.donut-row { display: flex; align-items: center; gap: 16px; }
+.donut-wrap { position: relative; flex-shrink: 0; }
+.donut-label-inner { position:absolute; top:50%;left:50%; transform:translate(-50%,-50%); text-align:center; }
+.donut-label-inner .dv { font-size: 15px; font-weight: 700; color: var(--ink); }
+.donut-label-inner .dl { font-size: 10px; color: var(--ink3); }
+.legend-list { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.legend-row { display: flex; align-items: center; gap: 8px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.leg-name { font-size: 12px; color: var(--ink2); flex: 1; }
+.leg-pct { font-size: 13px; font-weight: 700; }
+
+.risk-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bg2); }
+.risk-label { font-size: 12px; color: var(--ink3); white-space: nowrap; font-weight: 500; }
+.risk-track { flex: 1; height: 6px; background: linear-gradient(90deg, #00b87a, #e8a020, #f04560); border-radius: 3px; position: relative; }
+.risk-thumb { position: absolute; top: -5px; left: 54%; width: 16px; height: 16px; background: #fff; border: 2px solid var(--gold); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.risk-val { font-size: 12px; font-weight: 700; color: var(--gold); }
+
+.stocks-section { margin: 0 16px 16px; }
+.stocks-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.stocks-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.stocks-more { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+.stock-row {
+  background: #fff;
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+  cursor: pointer;
+}
+.stock-ico { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.stock-info { flex: 1; }
+.stock-ticker-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.stock-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; font-weight: 400; }
+.stock-right { text-align: right; }
+.stock-weight { font-size: 13px; font-weight: 700; color: var(--ink); }
+.stock-pnl { font-size: 12px; font-weight: 600; margin-top: 1px; }
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+
+.ai-cta {
+  margin: 0 16px 28px;
+  background: linear-gradient(135deg, var(--blue) 0%, #6a4ff0 100%);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(59,111,240,0.3);
+}
+.ai-cta-icon { font-size: 28px; }
+.ai-cta-text h3 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ai-cta-text p { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 400; }
+.ai-cta-arrow { margin-left: auto; font-size: 18px; color: rgba(255,255,255,0.6); }
+
+/* ══════════════════════════════════════
+   ③ AI 리포트
+══════════════════════════════════════ */
+#s-report { background: var(--bg1); }
+
+.report-mode-toggle {
+  margin: 0 16px 16px;
+  display: flex;
+  background: var(--bg2);
+  border-radius: 10px;
+  padding: 4px;
+}
+.mode-btn {
+  flex: 1; padding: 9px;
+  border-radius: 7px;
+  border: none; background: transparent;
+  font-family: var(--font-body);
+  font-size: 12px; font-weight: 600;
+  color: var(--ink3); cursor: pointer;
+  transition: all .2s;
+}
+.mode-btn.active { background: #fff; color: var(--blue); box-shadow: var(--shadow-sm); }
+
+.report-confidence {
+  margin: 0 16px 16px;
+  background: var(--green-light);
+  border: 1px solid rgba(0,184,122,0.2);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.conf-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.conf-text { font-size: 13px; font-weight: 600; color: var(--green); }
+.conf-sub { font-size: 11px; color: var(--ink3); margin-left: auto; font-weight: 400; }
+
+.report-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+}
+.rc-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--bg2);
+  display: flex; align-items: center; gap: 12px;
+}
+.rc-ticker-badge {
+  background: var(--blue-light);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--blue);
+}
+.rc-name { font-size: 14px; font-weight: 700; color: var(--ink); flex: 1; }
+.rc-weight { font-size: 12px; color: var(--ink3); font-weight: 500; }
+
+.rc-tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
+.tag {
+  font-size: 11px; font-weight: 700;
+  border-radius: 6px; padding: 4px 10px;
+}
+.t-blue { background: var(--blue-light); color: var(--blue); }
+.t-green { background: var(--green-light); color: var(--green); }
+.t-gold { background: var(--gold-light); color: var(--gold); }
+.t-purple { background: var(--purple-light); color: var(--purple); }
+
+.rc-explain {
+  padding: 0 16px 14px;
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.75;
+  font-weight: 400;
+  border-left: 3px solid var(--blue-mid);
+  margin: 0 16px 14px;
+  background: var(--bg1);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 14px;
+}
+
+.rc-contrib {
+  padding: 12px 16px;
+  border-top: 1px solid var(--bg2);
+  display: flex; align-items: center; gap: 10px;
+}
+.rc-contrib-label { font-size: 11px; color: var(--ink3); font-weight: 500; width: 60px; }
+.rc-bar { flex: 1; height: 5px; background: var(--bg2); border-radius: 3px; }
+.rc-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--blue), var(--purple)); }
+.rc-contrib-val { font-size: 12px; font-weight: 700; color: var(--ink2); }
+
+/* ══════════════════════════════════════
+   ④ 투자 Q&A
+══════════════════════════════════════ */
+#s-qa { background: var(--bg1); padding-top: 0; }
+
+.qa-screen-inner { display: flex; flex-direction: column; height: 100%; }
+.qa-top { padding: 96px 16px 12px; }
+.qa-top h1 { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ink); }
+.qa-top p { font-size: 13px; color: var(--ink3); margin-top: 3px; font-weight: 400; }
+
+.chat-area { flex: 1; overflow-y: auto; padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+.chat-area::-webkit-scrollbar { display: none; }
+
+.chat-msg { display: flex; gap: 8px; }
+.chat-msg.user { flex-direction: row-reverse; }
+.chat-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; margin-top: 2px;
+}
+.chat-av.ai { background: var(--blue); }
+.chat-av.me { background: var(--bg3); font-size: 11px; font-weight: 700; color: var(--ink2); }
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 11px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.65;
+  font-weight: 400;
+}
+.chat-msg.ai .chat-bubble {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--bg3);
+  border-radius: 4px 14px 14px 14px;
+  box-shadow: var(--shadow-sm);
+}
+.chat-msg.user .chat-bubble {
+  background: var(--blue);
+  color: #fff;
+  border-radius: 14px 4px 14px 14px;
+}
+.chat-highlight { color: var(--blue); font-weight: 700; }
+.chat-highlight-green { color: var(--green); font-weight: 700; }
+
+.chat-sources { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.source-pill {
+  background: var(--bg1);
+  border: 1px solid var(--bg3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px; color: var(--ink3); font-weight: 500;
+}
+
+.chips-area { padding: 0 16px 10px; display: flex; gap: 8px; overflow-x: auto; }
+.chips-area::-webkit-scrollbar { display: none; }
+.chip {
+  white-space: nowrap;
+  background: #fff;
+  border: 1px solid var(--bg3);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 12px; font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.qa-input-bar {
+  padding: 10px 16px 28px;
+  display: flex; gap: 8px; align-items: center;
+  border-top: 1px solid var(--bg2);
+  background: #fff;
+}
+.qa-field {
+  flex: 1;
+  background: var(--bg1);
+  border: 1.5px solid var(--bg3);
+  border-radius: 22px;
+  padding: 11px 16px;
+  font-family: var(--font-body);
+  font-size: 13px; color: var(--ink);
+  outline: none;
+}
+.qa-send-btn {
+  width: 40px; height: 40px;
+  background: var(--blue);
+  border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #fff; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59,111,240,0.35);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════
+   ⑤ 리밸런싱
+══════════════════════════════════════ */
+#s-rebalance { background: var(--bg1); }
+
+.reb-alert {
+  margin: 0 16px 16px;
+  background: var(--gold-light);
+  border: 1px solid rgba(232,160,32,0.25);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.reb-alert-icon { font-size: 22px; margin-top: 1px; }
+.reb-alert h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.reb-alert p { font-size: 12px; color: var(--ink3); line-height: 1.5; font-weight: 400; }
+
+.reb-section { margin: 0 16px 16px; }
+.reb-section-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+
+.compare-card {
+  background: #fff;
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+}
+.compare-head {
+  display: grid; grid-template-columns: 1fr 32px 1fr;
+  padding: 12px 16px;
+  background: var(--bg1);
+  border-bottom: 1px solid var(--bg2);
+}
+.compare-head-label { font-size: 11px; font-weight: 700; color: var(--ink3); text-transform: uppercase; letter-spacing: 1px; }
+.compare-head-label:last-child { text-align: right; }
+
+.compare-row {
+  display: grid; grid-template-columns: 1fr 32px 1fr;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--bg2);
+  align-items: center;
+}
+.compare-row:last-child { border-bottom: none; }
+.c-left { display: flex; align-items: center; gap: 6px; }
+.c-right { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+.c-ticker { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink3); }
+.c-pct { font-size: 14px; font-weight: 700; color: var(--ink); }
+.c-arrow-cell { display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink4); }
+.c-new-pct { font-size: 14px; font-weight: 700; }
+.c-change { font-size: 10px; font-weight: 700; }
+.c-up { color: var(--green); }
+.c-down { color: var(--red); }
+.c-same { color: var(--ink4); }
+
+.c-bar-mini { height: 3px; background: var(--bg2); border-radius: 2px; margin-top: 3px; }
+.c-bar-fill { height: 100%; border-radius: 2px; }
+
+.reason-card {
+  background: #fff;
+  border-radius: var(--r);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+}
+.reason-item { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+.reason-item:last-child { margin-bottom: 0; }
+.r-bullet {
+  width: 20px; height: 20px;
+  background: var(--blue-light);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--blue); font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.r-text { font-size: 13px; color: var(--ink2); line-height: 1.6; font-weight: 400; }
+
+.reb-actions { margin: 0 16px 32px; display: flex; flex-direction: column; gap: 10px; }
+.btn-accept {
+  width: 100%; padding: 16px;
+  background: var(--green);
+  color: #fff; border: none;
+  border-radius: var(--r-sm);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,184,122,0.3);
+}
+.btn-later {
+  width: 100%; padding: 14px;
+  background: transparent;
+  color: var(--ink3);
+  border: 1.5px solid var(--bg3);
+  border-radius: var(--r-sm);
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════ */
+.bottom-nav {
+  display: flex;
+  background: #fff;
+  border-top: 1px solid var(--bg2);
+  padding: 8px 0 20px;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 10;
+}
+.bnav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.bnav-icon { font-size: 20px; }
+.bnav-label { font-size: 9px; font-weight: 600; color: var(--ink4); letter-spacing: 0.3px; }
+.bnav-item.active .bnav-label { color: var(--blue); }
+
+/* ══════════════════════════════════════
+   FLOW DESCRIPTION (below phone)
+══════════════════════════════════════ */
+.flow-desc {
+  width: 375px;
+  margin-top: 28px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--bg3);
+}
+.flow-desc h3 {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700;
+  color: var(--ink); margin-bottom: 12px;
+}
+.flow-step-item { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+.flow-step-item:last-child { margin-bottom: 0; }
+.fs-num {
+  width: 22px; height: 22px;
+  background: var(--blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  flex-shrink: 0; margin-top: 1px;
+}
+.fs-text { font-size: 13px; color: var(--ink2); line-height: 1.5; font-weight: 400; }
+.fs-text strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-badge">📱 모바일 UI 프로토타입</div>
+  <div class="page-title">PortfolioAI 서비스 미리보기</div>
+  <div class="page-sub">각 화면을 선택해 실제 앱 UI를 확인하세요</div>
+</div>
+
+<!-- SCREEN NAV -->
+<div class="screen-nav">
+  <button class="snav-btn active" onclick="switchScreen('onboarding', this)">① 온보딩</button>
+  <button class="snav-btn" onclick="switchScreen('portfolio', this)">② 포트폴리오 분석</button>
+  <button class="snav-btn" onclick="switchScreen('report', this)">③ AI 투자 리포트</button>
+  <button class="snav-btn" onclick="switchScreen('qa', this)">④ 투자 Q&A</button>
+  <button class="snav-btn" onclick="switchScreen('rebalance', this)">⑤ 리밸런싱 제안</button>
+</div>
+
+<!-- PHONE FRAME -->
+<div class="phone-wrap">
+  <div class="phone-frame">
+    <div class="phone-notch">
+      <div class="notch-cam"></div>
+      <div class="notch-speaker"></div>
+    </div>
+    <div class="phone-screen">
+
+      <!-- STATUS BAR -->
+      <div class="phone-status">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <span class="status-icon">●●●</span>
+          <span class="status-icon">WiFi</span>
+          <span class="status-icon">🔋</span>
+        </div>
       </div>
-    </header>
 
-    <main>
-      <!-- HERO (Attention) -->
-      <section class="section hero" id="hero">
-        <div class="container">
-          <div class="hero-grid">
+      <!-- ════════════════ ① 온보딩 ════════════════ -->
+      <div id="s-onboarding" class="screen active">
+        <div class="scroll-area" style="padding-bottom: 0;">
+          <div class="onboard-hero">
+            <div class="onboard-icon-wrap">✦</div>
+            <h2>내 포트폴리오를<br>AI가 설명해 드려요</h2>
+            <p>계좌를 연결하면 투자 이유부터<br>전략까지 쉽게 이해할 수 있어요</p>
+          </div>
+          <div class="onboard-body">
+            <div class="section-label-sm">증권사 선택</div>
+            <div class="broker-grid">
+              <div class="broker-card selected" onclick="toggleBroker(this)">
+                <div class="broker-logo" style="background:#ffe8e8">🔴</div>
+                <div class="broker-name">키움증권</div>
+              </div>
+              <div class="broker-card" onclick="toggleBroker(this)">
+                <div class="broker-logo" style="background:#fff8e1">🟡</div>
+                <div class="broker-name">미래에셋</div>
+              </div>
+              <div class="broker-card" onclick="toggleBroker(this)">
+                <div class="broker-logo" style="background:#e3f2fd">🔵</div>
+                <div class="broker-name">삼성증권</div>
+              </div>
+              <div class="broker-card" onclick="toggleBroker(this)">
+                <div class="broker-logo" style="background:#e8f5e9">🟢</div>
+                <div class="broker-name">NH투자증권</div>
+              </div>
+            </div>
+
+            <div class="invest-level-wrap">
+              <div class="section-label-sm">투자 경험</div>
+              <div class="level-options">
+                <div class="level-opt" onclick="toggleLevel(this)">
+                  <div class="level-dot"></div>
+                  <div class="level-text">
+                    <h4>완전 초보예요</h4>
+                    <p>투자를 시작한 지 6개월 미만이에요</p>
+                  </div>
+                </div>
+                <div class="level-opt selected" onclick="toggleLevel(this)">
+                  <div class="level-dot"></div>
+                  <div class="level-text">
+                    <h4>조금 알아요</h4>
+                    <p>기본 용어는 알지만 전략이 어려워요</p>
+                  </div>
+                </div>
+                <div class="level-opt" onclick="toggleLevel(this)">
+                  <div class="level-dot"></div>
+                  <div class="level-text">
+                    <h4>어느 정도 알아요</h4>
+                    <p>스스로 분석하지만 확신이 없어요</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-full" onclick="switchScreen('portfolio', document.querySelectorAll('.snav-btn')[1])">
+              포트폴리오 분석 시작하기 →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════ ② 포트폴리오 분석 ════════════════ -->
+      <div id="s-portfolio" class="screen">
+        <div class="app-header">
+          <h1>내 포트폴리오</h1>
+          <div class="icon-btn">🔔</div>
+        </div>
+        <div class="scroll-area" style="padding-bottom: 80px;">
+          <!-- 총 자산 카드 -->
+          <div class="pf-card">
+            <div class="pf-label">총 투자금액</div>
+            <div class="pf-amount">₩12,580,000</div>
+            <div class="pf-stats">
+              <div>
+                <div class="pf-stat-label">수익률</div>
+                <div class="pf-stat-val green">+11.3%</div>
+              </div>
+              <div>
+                <div class="pf-stat-label">평가손익</div>
+                <div class="pf-stat-val green">+₩1,280,000</div>
+              </div>
+              <div>
+                <div class="pf-stat-label">보유 종목</div>
+                <div class="pf-stat-val">8종목</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 자산 분포 -->
+          <div class="chart-section">
+            <div class="chart-card">
+              <div class="chart-card-title">자산 분포</div>
+              <div class="donut-row">
+                <div class="donut-wrap">
+                  <svg width="110" height="110" viewBox="0 0 110 110">
+                    <circle cx="55" cy="55" r="42" fill="none" stroke="#f0f2f6" stroke-width="18"/>
+                    <!-- 주식 65% -->
+                    <circle cx="55" cy="55" r="42" fill="none" stroke="#3b6ff0" stroke-width="18"
+                      stroke-dasharray="171.5 263.9" stroke-dashoffset="66" stroke-linecap="butt"
+                      transform="rotate(-90 55 55)"/>
+                    <!-- ETF 22% -->
+                    <circle cx="55" cy="55" r="42" fill="none" stroke="#7c5fe6" stroke-width="18"
+                      stroke-dasharray="58.1 263.9" stroke-dashoffset="-105.5" stroke-linecap="butt"
+                      transform="rotate(-90 55 55)"/>
+                    <!-- 현금 13% -->
+                    <circle cx="55" cy="55" r="42" fill="none" stroke="#00b87a" stroke-width="18"
+                      stroke-dasharray="34.3 263.9" stroke-dashoffset="-163.6" stroke-linecap="butt"
+                      transform="rotate(-90 55 55)"/>
+                  </svg>
+                  <div class="donut-label-inner">
+                    <div class="dv">8종목</div>
+                    <div class="dl">보유</div>
+                  </div>
+                </div>
+                <div class="legend-list">
+                  <div class="legend-row">
+                    <div class="leg-dot" style="background:#3b6ff0;border-radius:3px"></div>
+                    <div class="leg-name">주식</div>
+                    <div class="leg-pct" style="color:#3b6ff0">65%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="leg-dot" style="background:#7c5fe6;border-radius:3px"></div>
+                    <div class="leg-name">ETF</div>
+                    <div class="leg-pct" style="color:#7c5fe6">22%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="leg-dot" style="background:#00b87a;border-radius:3px"></div>
+                    <div class="leg-name">현금성</div>
+                    <div class="leg-pct" style="color:#00b87a">13%</div>
+                  </div>
+                  <div class="risk-row" style="margin-top:10px;padding-top:10px;border-top:1px solid #f0f2f6">
+                    <div class="risk-label">리스크</div>
+                    <div class="risk-track"><div class="risk-thumb"></div></div>
+                    <div class="risk-val">중간</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 종목 리스트 -->
+          <div class="stocks-section">
+            <div class="stocks-header">
+              <div class="stocks-title">보유 종목</div>
+              <div class="stocks-more">전체 보기</div>
+            </div>
+            <div class="stock-row">
+              <div class="stock-ico" style="background:#e8eeff">🍎</div>
+              <div class="stock-info">
+                <div class="stock-ticker-name">AAPL · 애플</div>
+                <div class="stock-sub">비중 18% · ₩2,264,400</div>
+              </div>
+              <div class="stock-right">
+                <div class="stock-weight">₩2.26M</div>
+                <div class="stock-pnl pos">+14.2%</div>
+              </div>
+            </div>
+            <div class="stock-row">
+              <div class="stock-ico" style="background:#e3f2fd">🪟</div>
+              <div class="stock-info">
+                <div class="stock-ticker-name">MSFT · 마이크로소프트</div>
+                <div class="stock-sub">비중 15% · ₩1,887,000</div>
+              </div>
+              <div class="stock-right">
+                <div class="stock-weight">₩1.89M</div>
+                <div class="stock-pnl pos">+9.8%</div>
+              </div>
+            </div>
+            <div class="stock-row">
+              <div class="stock-ico" style="background:#ede9ff">📈</div>
+              <div class="stock-info">
+                <div class="stock-ticker-name">TIGER S&P500 ETF</div>
+                <div class="stock-sub">비중 12% · ₩1,509,600</div>
+              </div>
+              <div class="stock-right">
+                <div class="stock-weight">₩1.51M</div>
+                <div class="stock-pnl pos">+6.1%</div>
+              </div>
+            </div>
+            <div class="stock-row">
+              <div class="stock-ico" style="background:#fdeaed">🔵</div>
+              <div class="stock-info">
+                <div class="stock-ticker-name">005930 · 삼성전자</div>
+                <div class="stock-sub">비중 11% · ₩1,383,800</div>
+              </div>
+              <div class="stock-right">
+                <div class="stock-weight">₩1.38M</div>
+                <div class="stock-pnl neg">-2.3%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI CTA -->
+          <div class="ai-cta" onclick="switchScreen('report', document.querySelectorAll('.snav-btn')[2])">
+            <div class="ai-cta-icon">✦</div>
+            <div class="ai-cta-text">
+              <h3>AI 투자 설명 보기</h3>
+              <p>왜 이 종목들로 구성됐는지 알아봐요</p>
+            </div>
+            <div class="ai-cta-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="bnav-item active">
+            <span class="bnav-icon">📊</span>
+            <span class="bnav-label">포트폴리오</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('report', document.querySelectorAll('.snav-btn')[2])">
+            <span class="bnav-icon">✦</span>
+            <span class="bnav-label">AI 리포트</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('qa', document.querySelectorAll('.snav-btn')[3])">
+            <span class="bnav-icon">💬</span>
+            <span class="bnav-label">Q&A</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('rebalance', document.querySelectorAll('.snav-btn')[4])">
+            <span class="bnav-icon">⚖️</span>
+            <span class="bnav-label">리밸런싱</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════ ③ AI 리포트 ════════════════ -->
+      <div id="s-report" class="screen">
+        <div class="app-header">
+          <h1>AI 투자 리포트</h1>
+          <div class="icon-btn">↗</div>
+        </div>
+        <div class="scroll-area" style="padding-bottom: 80px;">
+          <div class="report-mode-toggle">
+            <button class="mode-btn active" onclick="toggleMode(this)">🙂 초보자 모드</button>
+            <button class="mode-btn" onclick="toggleMode(this)">📐 전문가 모드</button>
+          </div>
+
+          <div class="report-confidence">
+            <div class="conf-dot"></div>
+            <div class="conf-text">AI 분석 완료 · 확신도 87%</div>
+            <div class="conf-sub">2025.03.13 기준</div>
+          </div>
+
+          <!-- 종목 카드 1 -->
+          <div class="report-card">
+            <div class="rc-header">
+              <div class="rc-ticker-badge">AAPL</div>
+              <div class="rc-name">애플</div>
+              <div class="rc-weight">비중 18%</div>
+            </div>
+            <div class="rc-tags">
+              <span class="tag t-blue">안정적 수익성</span>
+              <span class="tag t-green">배당 성장</span>
+              <span class="tag t-gold">AI 하드웨어</span>
+            </div>
+            <div class="rc-explain">
+              애플은 아이폰을 쓰면 맥북, 에어팟까지 함께 사게 되는 <strong style="color:var(--blue)">생태계 효과</strong>가 있어요. 1억 명이 넘는 유료 구독자 덕분에 안정적인 수익이 나오고, AI 아이폰 출시로 교체 수요도 늘어날 전망이에요.
+            </div>
+            <div class="rc-contrib">
+              <div class="rc-contrib-label">수익 기여</div>
+              <div class="rc-bar"><div class="rc-bar-fill" style="width:78%"></div></div>
+              <div class="rc-contrib-val">+₩982K</div>
+            </div>
+          </div>
+
+          <!-- 종목 카드 2 -->
+          <div class="report-card">
+            <div class="rc-header">
+              <div class="rc-ticker-badge">MSFT</div>
+              <div class="rc-name">마이크로소프트</div>
+              <div class="rc-weight">비중 15%</div>
+            </div>
+            <div class="rc-tags">
+              <span class="tag t-purple">클라우드 1위</span>
+              <span class="tag t-blue">AI 핵심주</span>
+              <span class="tag t-green">안정 배당</span>
+            </div>
+            <div class="rc-explain">
+              전 세계 기업들이 AI를 쓸 때 가장 많이 선택하는 클라우드 서비스(Azure)를 운영해요. ChatGPT를 만든 OpenAI의 최대 투자자이기도 해서 <strong style="color:var(--purple)">AI 성장의 직접 수혜주</strong>예요.
+            </div>
+            <div class="rc-contrib">
+              <div class="rc-contrib-label">수익 기여</div>
+              <div class="rc-bar"><div class="rc-bar-fill" style="width:58%"></div></div>
+              <div class="rc-contrib-val">+₩604K</div>
+            </div>
+          </div>
+
+          <!-- 종목 카드 3 -->
+          <div class="report-card">
+            <div class="rc-header">
+              <div class="rc-ticker-badge">TIGER</div>
+              <div class="rc-name">TIGER 미국S&P500</div>
+              <div class="rc-weight">비중 12%</div>
+            </div>
+            <div class="rc-tags">
+              <span class="tag t-green">리스크 분산</span>
+              <span class="tag t-blue">안전망 역할</span>
+            </div>
+            <div class="rc-explain">
+              미국 대표 기업 500개를 한 번에 담는 ETF예요. 개별 종목이 흔들려도 전체 포트폴리오가 안정적으로 유지되도록 <strong style="color:var(--green)">안전망 역할</strong>을 해요.
+            </div>
+            <div class="rc-contrib">
+              <div class="rc-contrib-label">수익 기여</div>
+              <div class="rc-bar"><div class="rc-bar-fill" style="width:42%"></div></div>
+              <div class="rc-contrib-val">+₩437K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-nav">
+          <div class="bnav-item" onclick="switchScreen('portfolio', document.querySelectorAll('.snav-btn')[1])">
+            <span class="bnav-icon">📊</span>
+            <span class="bnav-label">포트폴리오</span>
+          </div>
+          <div class="bnav-item active">
+            <span class="bnav-icon">✦</span>
+            <span class="bnav-label">AI 리포트</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('qa', document.querySelectorAll('.snav-btn')[3])">
+            <span class="bnav-icon">💬</span>
+            <span class="bnav-label">Q&A</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('rebalance', document.querySelectorAll('.snav-btn')[4])">
+            <span class="bnav-icon">⚖️</span>
+            <span class="bnav-label">리밸런싱</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════ ④ Q&A ════════════════ -->
+      <div id="s-qa" class="screen" style="padding-top:0">
+        <div class="qa-screen-inner" style="height:100%">
+          <div class="qa-top">
+            <h1>투자 Q&A</h1>
+            <p>궁금한 건 뭐든지 물어보세요</p>
+          </div>
+
+          <div class="chat-area" id="chatArea">
+            <div class="chat-msg ai">
+              <div class="chat-av ai">✦</div>
+              <div>
+                <div class="chat-bubble">
+                  안녕하세요 😊 저는 포트폴리오AI 입니다.<br>내 투자에 대해 궁금한 건 무엇이든 물어보세요. 쉽게 설명해 드릴게요!
+                </div>
+              </div>
+            </div>
+            <div class="chat-msg user">
+              <div class="chat-av me">나</div>
+              <div>
+                <div class="chat-bubble">삼성전자가 왜 마이너스예요? 팔아야 할까요?</div>
+              </div>
+            </div>
+            <div class="chat-msg ai">
+              <div class="chat-av ai">✦</div>
+              <div>
+                <div class="chat-bubble">
+                  최근 반도체 업황이 잠깐 주춤해서 -2.3% 하락했어요.<br><br>
+                  하지만 삼성전자는 <span class="chat-highlight">AI용 HBM 메모리</span> 생산 능력을 빠르게 키우고 있어서, 6~12개월 후를 보면 회복 가능성이 높아요.<br><br>
+                  <span class="chat-highlight-green">AI 판단: 지금 파는 건 손해일 수 있어요.</span> 포트폴리오에서 방어주 역할도 하고 있거든요 👍
+                </div>
+                <div class="chat-sources">
+                  <span class="source-pill">📄 삼성 Q4 실적</span>
+                  <span class="source-pill">📈 HBM 시장 전망</span>
+                </div>
+              </div>
+            </div>
+            <div class="chat-msg user">
+              <div class="chat-av me">나</div>
+              <div>
+                <div class="chat-bubble">내 포트폴리오 전략을 한 줄로 설명해줘</div>
+              </div>
+            </div>
+            <div class="chat-msg ai">
+              <div class="chat-av ai">✦</div>
+              <div>
+                <div class="chat-bubble">
+                  <span class="chat-highlight">"AI 혁명의 중심 기업에 집중하되, ETF로 안전망을 깔아둔 성장형 포트폴리오"</span><br><br>
+                  리스크는 중간, 수익을 적극적으로 노리는 스타일이에요 ✨
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chips-area" id="chipsArea">
+            <div class="chip" onclick="sendChip(this)">📊 리스크가 적당한가요?</div>
+            <div class="chip" onclick="sendChip(this)">🌍 해외 비중이 너무 높나요?</div>
+            <div class="chip" onclick="sendChip(this)">💰 배당은 얼마나 받나요?</div>
+            <div class="chip" onclick="sendChip(this)">📉 폭락하면 손실이 얼마나?</div>
+          </div>
+
+          <div class="qa-input-bar">
+            <input class="qa-field" id="qaField" type="text" placeholder="질문을 입력하세요...">
+            <button class="qa-send-btn" onclick="sendMsg()">↑</button>
+          </div>
+        </div>
+
+        <div class="bottom-nav" style="position:relative;bottom:auto;">
+          <div class="bnav-item" onclick="switchScreen('portfolio', document.querySelectorAll('.snav-btn')[1])">
+            <span class="bnav-icon">📊</span>
+            <span class="bnav-label">포트폴리오</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('report', document.querySelectorAll('.snav-btn')[2])">
+            <span class="bnav-icon">✦</span>
+            <span class="bnav-label">AI 리포트</span>
+          </div>
+          <div class="bnav-item active">
+            <span class="bnav-icon">💬</span>
+            <span class="bnav-label">Q&A</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('rebalance', document.querySelectorAll('.snav-btn')[4])">
+            <span class="bnav-icon">⚖️</span>
+            <span class="bnav-label">리밸런싱</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════ ⑤ 리밸런싱 ════════════════ -->
+      <div id="s-rebalance" class="screen">
+        <div class="app-header">
+          <h1>리밸런싱 제안</h1>
+          <div class="icon-btn">ℹ️</div>
+        </div>
+        <div class="scroll-area" style="padding-bottom: 100px;">
+          <div class="reb-alert">
+            <div class="reb-alert-icon">⚖️</div>
             <div>
-              <div class="kicker"><span class="dot" aria-hidden="true"></span> Market validation beta — built for beginner investors</div>
-              <h1>AI recommended your portfolio.<br />Do you actually understand it?</h1>
-              <p class="subheadline">Most investment apps show the result. We explain the reason behind the portfolio.</p>
-
-              <div class="hero-ctas">
-                <button class="btn btn-primary" id="joinBetaBtn" type="button">Join Beta</button>
-                <button class="btn btn-secondary" id="seeExampleBtn" type="button">See Example Portfolio</button>
-              </div>
-
-              <div class="trust-row" aria-label="Product benefits">
-                <span class="pill"><span class="dot" aria-hidden="true"></span> Plain-English strategy</span>
-                <span class="pill"><span class="dot" aria-hidden="true"></span> Risk + return explained</span>
-                <span class="pill"><span class="dot" aria-hidden="true"></span> Ask questions anytime</span>
-              </div>
-            </div>
-
-            <div class="hero-card" aria-label="Illustration placeholder">
-              <div class="hero-illustration">
-                <div class="mini" aria-label="Portfolio allocation preview">
-                  <div class="mini-title">
-                    <span>AI Portfolio (example)</span>
-                    <span class="chip">Balanced</span>
-                  </div>
-                  <div class="bars" aria-hidden="true">
-                    <div class="bar-row"><span>Stocks</span><span>60%</span></div>
-                    <div class="bar"><span style="width: 60%"></span></div>
-                    <div class="bar-row"><span>Bonds</span><span>30%</span></div>
-                    <div class="bar"><span style="width: 30%"></span></div>
-                    <div class="bar-row"><span>Cash</span><span>10%</span></div>
-                    <div class="bar"><span style="width: 10%"></span></div>
-                  </div>
-                </div>
-                <div class="mini" aria-label="Explanation preview">
-                  <div class="mini-title">
-                    <span>Why this portfolio?</span>
-                    <span class="chip">Explainable</span>
-                  </div>
-                  <p style="margin: 0; color: var(--muted); font-weight: 650; font-size: 13px;">
-                    Designed for steady growth with controlled swings. Bonds reduce volatility; cash keeps flexibility for dips.
-                  </p>
-                </div>
-              </div>
+              <h4>AI 포트폴리오 조정 제안</h4>
+              <p>현재 구성보다 수익률을 높이고 리스크를 낮출 수 있는 조정안이 있어요</p>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- PROBLEM (Interest) -->
-      <section class="section" id="problem">
-        <div class="container">
-          <h2>Why beginner investors struggle</h2>
-          <p class="lead">If you can’t explain your portfolio, it’s hard to trust it — and even harder to learn from it.</p>
-
-          <div class="grid-3" role="list">
-            <article class="card" role="listitem">
-              <h3>“Why were these assets selected?”</h3>
-              <p>Investors see allocations but not the reasoning behind each asset choice.</p>
-            </article>
-            <article class="card" role="listitem">
-              <h3>“I can’t explain my strategy.”</h3>
-              <p>Without a clear strategy, it’s difficult to stay consistent during market swings.</p>
-            </article>
-            <article class="card" role="listitem">
-              <h3>Robo-advisors lack explanation</h3>
-              <p>Portfolios feel like a black box — results without context.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- SOLUTION -->
-      <section class="section" id="solution">
-        <div class="container">
-          <h2>Explainable AI Portfolio</h2>
-          <p class="lead">We convert AI portfolios into understandable investment strategies — so you can learn what you’re doing, not just copy the output.</p>
-
-          <div class="grid-2" role="list">
-            <article class="card" role="listitem">
-              <h3>Explainable Portfolio</h3>
-              <p style="margin-bottom: 12px;">Turn allocations into a story you can repeat in one minute.</p>
-              <ul class="explain-list">
-                <li>Asset allocation explanation</li>
-                <li>Risk explanation</li>
-                <li>Expected return explanation</li>
-              </ul>
-            </article>
-            <article class="card" role="listitem">
-              <h3>Investment Q&amp;A Chatbot</h3>
-              <p style="margin-bottom: 12px;">Ask questions in your own words and learn faster.</p>
-              <ul class="explain-list">
-                <li>Ask portfolio questions</li>
-                <li>Learn financial terms</li>
-                <li>Understand market context</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="example-wrap" id="example" aria-label="Example portfolio section" hidden>
-            <div class="example-head">
-              <div>
-                <strong>Example Portfolio</strong>
-                <span style="color: var(--muted); font-weight: 700; font-size: 13px;">(Illustrative only — not financial advice)</span>
+          <div class="reb-section">
+            <div class="reb-section-title">조정 전 / 후 비교</div>
+            <div class="compare-card">
+              <div class="compare-head">
+                <div class="compare-head-label">현재</div>
+                <div></div>
+                <div class="compare-head-label" style="text-align:right">제안</div>
               </div>
-              <button class="btn btn-ghost" type="button" id="closeExampleBtn" aria-controls="example" aria-expanded="true">
-                Close
-              </button>
-            </div>
-            <div class="example-body">
-              <div class="example-grid">
-                <div class="panel">
-                  <h4>AI allocation (sample)</h4>
-                  <div class="alloc" aria-label="Allocation breakdown">
-                    <div class="alloc-item">
-                      <div class="label"><span>Global Stocks (ETF)</span><span class="pct">55%</span></div>
-                      <div class="bar" aria-hidden="true"><span style="width: 55%"></span></div>
-                    </div>
-                    <div class="alloc-item">
-                      <div class="label"><span>Investment-Grade Bonds</span><span class="pct">35%</span></div>
-                      <div class="bar" aria-hidden="true"><span style="width: 35%"></span></div>
-                    </div>
-                    <div class="alloc-item">
-                      <div class="label"><span>Cash</span><span class="pct">10%</span></div>
-                      <div class="bar" aria-hidden="true"><span style="width: 10%"></span></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel">
-                  <h4>Explanation (what you’d read)</h4>
-                  <ul class="explain-list">
-                    <li><strong>Goal:</strong> balanced growth for a beginner with smaller capital.</li>
-                    <li><strong>Why 55% stocks:</strong> long-term upside, diversified globally to reduce single-country risk.</li>
-                    <li><strong>Why 35% bonds:</strong> smoother ride so you’re less likely to panic-sell.</li>
-                    <li><strong>Why 10% cash:</strong> flexibility for emergencies and buying dips.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="panel">
-                <h4>Try asking (examples)</h4>
-                <ul class="explain-list">
-                  <li>“What happens if stocks fall 20%?”</li>
-                  <li>“Why not 100% stocks if I’m young?”</li>
-                  <li>“Explain bonds like I’m new.”</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- HOW IT WORKS -->
-      <section class="section" id="how-it-works">
-        <div class="container">
-          <h2>How it works</h2>
-          <p class="lead">A simple flow designed for learning — not just receiving an output.</p>
-
-          <div class="steps" role="list">
-            <article class="step" role="listitem">
-              <div class="step-num" aria-hidden="true">1</div>
-              <h3>View AI portfolio example</h3>
-              <p>See a realistic allocation and risk profile designed for beginners.</p>
-            </article>
-            <article class="step" role="listitem">
-              <div class="step-num" aria-hidden="true">2</div>
-              <h3>Read portfolio explanation</h3>
-              <p>Understand the “why” behind every allocation decision.</p>
-            </article>
-            <article class="step" role="listitem">
-              <div class="step-num" aria-hidden="true">3</div>
-              <h3>Ask questions to AI chatbot</h3>
-              <p>Clarify concepts, terms, and market context in plain English.</p>
-            </article>
-            <article class="step" role="listitem">
-              <div class="step-num" aria-hidden="true">4</div>
-              <h3>Decide investment strategy</h3>
-              <p>Choose with confidence because you understand the trade-offs.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- VALUE -->
-      <section class="section" id="value">
-        <div class="container">
-          <h2>What you gain</h2>
-          <p class="lead">The goal isn’t just a portfolio — it’s clarity you can act on.</p>
-
-          <div class="grid-3" role="list">
-            <article class="card" role="listitem">
-              <h3>Investment Understanding</h3>
-              <p>Understand your portfolio as strategy — not a random list of assets.</p>
-            </article>
-            <article class="card" role="listitem">
-              <h3>Better Investment Decisions</h3>
-              <p>Make decisions based on understanding, especially during volatility.</p>
-            </article>
-            <article class="card" role="listitem">
-              <h3>Learn While Investing</h3>
-              <p>Turn investing into a learning experience you can build on over time.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- SIGNUP (Action) -->
-      <section class="section" id="signup">
-        <div class="container">
-          <div class="signup-card">
-            <div class="signup-grid">
-              <div>
-                <h2>Join the beta waitlist</h2>
-                <p class="lead" style="margin-bottom: 18px;">
-                  We’re validating demand before building the MVP. If this solves your pain, leave your email — we’ll invite early users first.
-                </p>
-
-                <form id="betaForm" action="https://formspree.io/f/xyknjvzq" method="POST" novalidate>
-                  <p class="error" id="formError" role="alert"></p>
-                  <p class="success" id="formSuccess" role="status">Thank you for joining the beta waitlist.</p>
-
-                  <input type="hidden" name="source" value="landing_page" />
-                  <input type="hidden" name="page_url" id="pageUrlField" value="" />
-
-                  <div class="form-row">
-                    <label>
-                      Email address <span aria-hidden="true" style="color: var(--danger)">*</span>
-                      <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
-                    </label>
-                    <label>
-                      Investment experience (optional)
-                      <select id="experience" name="experience">
-                        <option value="">Select</option>
-                        <option value="none">No experience</option>
-                        <option value="lt1">Less than 1 year</option>
-                        <option value="1to3">1-3 years</option>
-                      </select>
-                    </label>
-                  </div>
-
-                  <button class="btn btn-primary" type="submit" id="joinBetaAccessBtn">Join Beta Access</button>
-                  <p class="fineprint">No spam. Just beta access updates. You can unsubscribe anytime.</p>
-                </form>
-              </div>
-
-              <aside class="benefits" aria-label="Beta benefits">
-                <div class="benefit">
-                  <span class="check" aria-hidden="true"></span>
+              <div class="compare-row">
+                <div class="c-left">
                   <div>
-                    <strong>See explanations, not just results</strong>
-                    <span>Understand allocations, risk, and expected return in plain English.</span>
+                    <div class="c-ticker">AAPL</div>
+                    <div class="c-pct">18%</div>
+                    <div class="c-bar-mini"><div class="c-bar-fill" style="width:72%;background:#3b6ff0"></div></div>
                   </div>
                 </div>
-                <div class="benefit">
-                  <span class="check" aria-hidden="true"></span>
+                <div class="c-arrow-cell">→</div>
+                <div class="c-right">
+                  <div style="text-align:right">
+                    <div class="c-ticker">AAPL</div>
+                    <div class="c-new-pct c-same">18%</div>
+                    <div class="c-change c-same">유지</div>
+                  </div>
+                </div>
+              </div>
+              <div class="compare-row">
+                <div class="c-left">
                   <div>
-                    <strong>Ask “why” anytime</strong>
-                    <span>Use Q&amp;A to learn terms and reasoning behind recommendations.</span>
+                    <div class="c-ticker">MSFT</div>
+                    <div class="c-pct">15%</div>
+                    <div class="c-bar-mini"><div class="c-bar-fill" style="width:60%;background:#3b6ff0"></div></div>
                   </div>
                 </div>
-                <div class="benefit">
-                  <span class="check" aria-hidden="true"></span>
+                <div class="c-arrow-cell">→</div>
+                <div class="c-right">
+                  <div style="text-align:right">
+                    <div class="c-ticker">MSFT</div>
+                    <div class="c-new-pct c-up">20%</div>
+                    <div class="c-change c-up">+5% ↑</div>
+                  </div>
+                </div>
+              </div>
+              <div class="compare-row">
+                <div class="c-left">
                   <div>
-                    <strong>Built for beginners in their 20s</strong>
-                    <span>Simple, educational flow for early career investors with small capital.</span>
+                    <div class="c-ticker">TIGER</div>
+                    <div class="c-pct">12%</div>
+                    <div class="c-bar-mini"><div class="c-bar-fill" style="width:48%;background:#7c5fe6"></div></div>
                   </div>
                 </div>
-              </aside>
+                <div class="c-arrow-cell">→</div>
+                <div class="c-right">
+                  <div style="text-align:right">
+                    <div class="c-ticker">TIGER</div>
+                    <div class="c-new-pct c-up">15%</div>
+                    <div class="c-change c-up">+3% ↑</div>
+                  </div>
+                </div>
+              </div>
+              <div class="compare-row">
+                <div class="c-left">
+                  <div>
+                    <div class="c-ticker">005930</div>
+                    <div class="c-pct">11%</div>
+                    <div class="c-bar-mini"><div class="c-bar-fill" style="width:44%;background:#3b6ff0"></div></div>
+                  </div>
+                </div>
+                <div class="c-arrow-cell">→</div>
+                <div class="c-right">
+                  <div style="text-align:right">
+                    <div class="c-ticker">005930</div>
+                    <div class="c-new-pct c-down">9%</div>
+                    <div class="c-change c-down">-2% ↓</div>
+                  </div>
+                </div>
+              </div>
+              <div class="compare-row">
+                <div class="c-left">
+                  <div>
+                    <div class="c-ticker">현금</div>
+                    <div class="c-pct">13%</div>
+                    <div class="c-bar-mini"><div class="c-bar-fill" style="width:52%;background:#00b87a"></div></div>
+                  </div>
+                </div>
+                <div class="c-arrow-cell">→</div>
+                <div class="c-right">
+                  <div style="text-align:right">
+                    <div class="c-ticker">현금</div>
+                    <div class="c-new-pct c-down">6%</div>
+                    <div class="c-change c-down">-7% ↓</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reb-section">
+            <div class="reb-section-title">AI가 이렇게 제안하는 이유</div>
+            <div class="reason-card">
+              <div class="reason-item">
+                <div class="r-bullet">1</div>
+                <div class="r-text">MSFT 비중을 5% 늘리는 건 Azure 클라우드 성장이 가속되고 있어서 AI 수혜가 더 강해질 것으로 보이기 때문이에요.</div>
+              </div>
+              <div class="reason-item">
+                <div class="r-bullet">2</div>
+                <div class="r-text">삼성전자를 2% 줄이는 건 단기 반도체 불확실성을 줄이려는 거예요. 완전히 팔지는 않아요.</div>
+              </div>
+              <div class="reason-item">
+                <div class="r-bullet">3</div>
+                <div class="r-text">ETF 비중을 높이면 개별 종목 리스크가 줄어들어 전체 포트폴리오가 더 안정적으로 돼요.</div>
+              </div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
 
-    <footer class="section" id="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="brand">
-            <span class="brand-badge" aria-hidden="true"></span>
-            <span>Explainable AI Portfolio</span>
+        <div class="reb-actions">
+          <button class="btn-accept">✓ 제안 수락하기</button>
+          <button class="btn-later">나중에 결정할게요</button>
+        </div>
+
+        <div class="bottom-nav" style="position:relative;bottom:auto">
+          <div class="bnav-item" onclick="switchScreen('portfolio', document.querySelectorAll('.snav-btn')[1])">
+            <span class="bnav-icon">📊</span>
+            <span class="bnav-label">포트폴리오</span>
           </div>
-          <div class="small">© <span id="year"></span> Market validation landing page. Not financial advice.</div>
+          <div class="bnav-item" onclick="switchScreen('report', document.querySelectorAll('.snav-btn')[2])">
+            <span class="bnav-icon">✦</span>
+            <span class="bnav-label">AI 리포트</span>
+          </div>
+          <div class="bnav-item" onclick="switchScreen('qa', document.querySelectorAll('.snav-btn')[3])">
+            <span class="bnav-icon">💬</span>
+            <span class="bnav-label">Q&A</span>
+          </div>
+          <div class="bnav-item active">
+            <span class="bnav-icon">⚖️</span>
+            <span class="bnav-label">리밸런싱</span>
+          </div>
         </div>
       </div>
-    </footer>
 
-    <script>
-      (function () {
-        const $ = (sel) => document.querySelector(sel);
-        const joinBetaBtn = $("#joinBetaBtn");
-        const navJoinBetaBtn = $("#navJoinBetaBtn");
-        const seeExampleBtn = $("#seeExampleBtn");
-        const closeExampleBtn = $("#closeExampleBtn");
-        const exampleWrap = $("#example");
+    </div><!-- phone-screen -->
+  </div><!-- phone-frame -->
+</div><!-- phone-wrap -->
 
-        const betaForm = $("#betaForm");
-        const emailInput = $("#email");
-        const expSelect = $("#experience");
-        const formError = $("#formError");
-        const formSuccess = $("#formSuccess");
-        const joinBetaAccessBtn = $("#joinBetaAccessBtn");
+<!-- FLOW DESCRIPTION -->
+<div class="flow-desc" id="flowDesc">
+  <h3>① 온보딩 — 계좌 연결 & 성향 파악</h3>
+  <div class="flow-step-item">
+    <div class="fs-num">1</div>
+    <div class="fs-text"><strong>증권사 선택</strong> — 키움, 미래에셋 등 연동된 계좌를 선택해요</div>
+  </div>
+  <div class="flow-step-item">
+    <div class="fs-num">2</div>
+    <div class="fs-text"><strong>투자 경험 입력</strong> — AI가 설명 수준을 맞춰드려요</div>
+  </div>
+  <div class="flow-step-item">
+    <div class="fs-num">3</div>
+    <div class="fs-text"><strong>분석 시작</strong> — 포트폴리오 분석 화면으로 이동해요</div>
+  </div>
+</div>
 
-        const scrollToId = (id) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        };
+<script>
+const flowDescs = {
+  onboarding: {
+    title: '① 온보딩 — 계좌 연결 & 성향 파악',
+    steps: [
+      ['1','증권사 선택','키움, 미래에셋 등 연동된 계좌를 선택해요'],
+      ['2','투자 경험 입력','AI가 설명 수준을 맞춰드려요'],
+      ['3','분석 시작','포트폴리오 분석 화면으로 이동해요']
+    ]
+  },
+  portfolio: {
+    title: '② 포트폴리오 분석 — 내 자산 한눈에',
+    steps: [
+      ['1','총 자산 요약','투자금, 수익률, 평가손익을 확인해요'],
+      ['2','자산 분포 차트','주식/ETF/현금 비중과 리스크 수준을 봐요'],
+      ['3','종목별 현황','각 종목의 비중과 수익률을 확인하고 AI 설명으로 이동해요']
+    ]
+  },
+  report: {
+    title: '③ AI 투자 리포트 — 종목별 편입 이유',
+    steps: [
+      ['1','설명 모드 선택','초보자/전문가 모드로 설명 수준을 조절해요'],
+      ['2','종목 카드 확인','각 종목이 왜 포함됐는지 이유 태그와 설명으로 알 수 있어요'],
+      ['3','수익 기여도 확인','어떤 종목이 수익에 가장 많이 기여하는지 봐요']
+    ]
+  },
+  qa: {
+    title: '④ 투자 Q&A — 자연어로 질문하기',
+    steps: [
+      ['1','추천 질문 칩','자주 묻는 질문을 탭 하나로 바로 물어봐요'],
+      ['2','자유 질문','아무 투자 궁금증이나 자연어로 입력해요'],
+      ['3','AI 답변 + 출처','쉬운 말로 답변하고 근거 자료도 보여줘요']
+    ]
+  },
+  rebalance: {
+    title: '⑤ 리밸런싱 제안 — 포트폴리오 최적화',
+    steps: [
+      ['1','조정 전/후 비교','각 종목의 비중 변화를 직관적으로 확인해요'],
+      ['2','조정 이유 설명','왜 이렇게 바꾸는지 AI가 쉽게 설명해요'],
+      ['3','수락/거절 선택','동의하면 수락, 다시 분석하거나 나중에 결정할 수 있어요']
+    ]
+  }
+};
 
-        const track = (eventName, payload) => {
-          const data = payload || {};
-          console.log("[track]", eventName, data);
+function switchScreen(name, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + name).classList.add('active');
+  btn.classList.add('active');
 
-          // GA4 custom event
-          try {
-            if (typeof gtag === "function") {
-              gtag("event", eventName, data);
-            }
-          } catch (e) {
-            // noop
-          }
-        };
+  // Update flow desc
+  const d = flowDescs[name];
+  const fd = document.getElementById('flowDesc');
+  fd.innerHTML = `<h3>${d.title}</h3>` + d.steps.map(([n,t,p]) =>
+    `<div class="flow-step-item">
+      <div class="fs-num">${n}</div>
+      <div class="fs-text"><strong>${t}</strong> — ${p}</div>
+    </div>`
+  ).join('');
+}
 
-        const isValidEmail = (value) => {
-          const v = String(value || "").trim();
-          if (!v) return false;
-          return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v);
-        };
+function toggleBroker(el) {
+  document.querySelectorAll('.broker-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function toggleLevel(el) {
+  document.querySelectorAll('.level-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function toggleMode(btn) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
 
-        const showError = (msg) => {
-          formError.textContent = msg;
-          formError.style.display = "block";
-          formSuccess.style.display = "none";
-        };
-
-        const clearError = () => {
-          formError.textContent = "";
-          formError.style.display = "none";
-        };
-
-        const showSuccess = () => {
-          formSuccess.style.display = "block";
-          formError.style.display = "none";
-        };
-
-        const toggleExample = (open) => {
-          const isOpen = !!open;
-          exampleWrap.hidden = !isOpen;
-          if (closeExampleBtn) closeExampleBtn.setAttribute("aria-expanded", String(isOpen));
-          if (isOpen) scrollToId("solution");
-        };
-
-        joinBetaBtn?.addEventListener("click", () => {
-          track("cta_click", { button_location: "hero", action: "join_beta" });
-          scrollToId("signup");
-          emailInput?.focus({ preventScroll: true });
-        });
-
-        navJoinBetaBtn?.addEventListener("click", () => {
-          track("cta_click", { button_location: "nav", action: "join_beta" });
-        });
-
-        seeExampleBtn?.addEventListener("click", () => {
-          track("example_portfolio_click", { button_location: "hero" });
-          toggleExample(true);
-        });
-
-        closeExampleBtn?.addEventListener("click", () => {
-          toggleExample(false);
-        });
-
-        emailInput?.addEventListener("input", () => {
-          if (formError.style.display === "block") clearError();
-        });
-
-        betaForm?.addEventListener("submit", (e) => {
-          e.preventDefault();
-          clearError();
-
-          const email = (emailInput?.value || "").trim();
-          const experience = expSelect?.value || "";
-
-          if (!isValidEmail(email)) {
-            showError("Please enter a valid email address.");
-            emailInput?.focus();
-            return;
-          }
-
-          // NOTE: Do not send PII (email) to GA4. Track only non-identifying fields.
-          track("email_submit_attempt", { experience: experience || "unspecified" });
-
-          const originalBtnText = joinBetaAccessBtn?.textContent || "";
-          if (joinBetaAccessBtn) {
-            joinBetaAccessBtn.disabled = true;
-            joinBetaAccessBtn.textContent = "Submitting...";
-          }
-
-          const formData = new FormData(betaForm);
-
-          // Keep the email field name as "email" for Formspree.
-          formData.set("email", email);
-          formData.set("experience", experience);
-
-          fetch(betaForm.action, {
-            method: "POST",
-            body: formData,
-            headers: { Accept: "application/json" },
-          })
-            .then(async (res) => {
-              if (res.ok) return { ok: true };
-              let json = null;
-              try {
-                json = await res.json();
-              } catch (e) {
-                // ignore
-              }
-              return { ok: false, json };
-            })
-            .then((result) => {
-              if (!result.ok) {
-                const msg =
-                  result.json?.errors?.[0]?.message ||
-                  "Something went wrong. Please try again in a moment.";
-                track("email_submit_error", { experience: experience || "unspecified" });
-                showError(msg);
-                return;
-              }
-
-              track("email_submit_success", { experience: experience || "unspecified" });
-              showSuccess();
-              betaForm.reset();
-
-              setTimeout(() => {
-                formSuccess.style.display = "none";
-              }, 6500);
-            })
-            .catch(() => {
-              track("email_submit_error", { experience: experience || "unspecified" });
-              showError("Network error. Please try again.");
-            })
-            .finally(() => {
-              if (joinBetaAccessBtn) {
-                joinBetaAccessBtn.disabled = false;
-                joinBetaAccessBtn.textContent = originalBtnText;
-              }
-            });
-        });
-
-        const yearEl = $("#year");
-        if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-        const pageUrlField = $("#pageUrlField");
-        if (pageUrlField) pageUrlField.value = window.location.href;
-      })();
-    </script>
-  </body>
+function sendMsg() {
+  const f = document.getElementById('qaField');
+  const txt = f.value.trim();
+  if (!txt) return;
+  addUserMsg(txt);
+  f.value = '';
+  setTimeout(() => addAiMsg('잠깐만요, 분석 중이에요... ✦'), 600);
+}
+function sendChip(el) {
+  addUserMsg(el.textContent.trim());
+  setTimeout(() => addAiMsg('좋은 질문이에요! 현재 포트폴리오를 기준으로 분석해 드릴게요. 잠깐만요 ✦'), 600);
+}
+function addUserMsg(txt) {
+  const area = document.getElementById('chatArea');
+  area.innerHTML += `<div class="chat-msg user"><div class="chat-av me">나</div><div class="chat-bubble" style="background:var(--blue);color:#fff;border-radius:14px 4px 14px 14px;max-width:82%;padding:11px 14px;font-size:13px;line-height:1.65">${txt}</div></div>`;
+  area.scrollTop = area.scrollHeight;
+}
+function addAiMsg(txt) {
+  const area = document.getElementById('chatArea');
+  area.innerHTML += `<div class="chat-msg ai"><div class="chat-av ai" style="width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px">✦</div><div><div class="chat-bubble">${txt}</div></div></div>`;
+  area.scrollTop = area.scrollHeight;
+}
+</script>
+</body>
 </html>
-
