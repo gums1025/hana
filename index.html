@@ -115,6 +115,41 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
+.cta-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin: -20px 0 28px;
+  flex-wrap: wrap;
+}
+.cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: var(--shadow-sm);
+  color: var(--ink2);
+  font-size: 12px;
+}
+.cta-open {
+  appearance: none;
+  border: none;
+  background: linear-gradient(135deg, #3b6ff0, #6a8bff);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(59,111,240,0.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.cta-open:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(59,111,240,0.28); }
+.cta-open:active { transform: translateY(0); }
 .snav-btn {
   padding: 9px 18px;
   border-radius: 10px;
@@ -694,6 +729,101 @@ body {
 }
 
 /* ══════════════════════════════════════
+   CONTACT MODAL
+══════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 24, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow-lg);
+  padding: 22px 22px 18px;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+}
+.modal-close {
+  border: none;
+  background: #f1f4fb;
+  color: var(--ink2);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+.form-row {
+  display: grid;
+  gap: 6px;
+}
+.form-row label {
+  font-size: 12px;
+  color: var(--ink2);
+  font-weight: 600;
+}
+.form-row input,
+.form-row textarea,
+.form-row select {
+  border: 1px solid #e4e8f2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.form-row textarea { min-height: 90px; resize: vertical; }
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+.btn-submit {
+  flex: 1;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-cancel {
+  border: 1px solid #e3e7f1;
+  background: #fff;
+  color: var(--ink2);
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.form-status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--ink2);
+}
+
+/* ══════════════════════════════════════
    BOTTOM NAV
 ══════════════════════════════════════ */
 .bottom-nav {
@@ -761,6 +891,10 @@ body {
   <button class="snav-btn" onclick="switchScreen('report', this)">③ AI 투자 리포트</button>
   <button class="snav-btn" onclick="switchScreen('qa', this)">④ 투자 Q&A</button>
   <button class="snav-btn" onclick="switchScreen('rebalance', this)">⑤ 리밸런싱 제안</button>
+</div>
+<div class="cta-row">
+  <div class="cta-pill">베타 참여 및 데모 문의</div>
+  <button class="cta-open" data-open-form="true">상담 신청하기</button>
 </div>
 
 <!-- PHONE FRAME -->
@@ -1368,9 +1502,55 @@ body {
     <div class="fs-num">2</div>
     <div class="fs-text"><strong>투자 경험 입력</strong> — AI가 설명 수준을 맞춰드려요</div>
   </div>
-  <div class="flow-step-item">
-    <div class="fs-num">3</div>
-    <div class="fs-text"><strong>분석 시작</strong> — 포트폴리오 분석 화면으로 이동해요</div>
+<div class="flow-step-item">
+  <div class="fs-num">3</div>
+  <div class="fs-text"><strong>분석 시작</strong> — 포트폴리오 분석 화면으로 이동해요</div>
+</div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-backdrop" id="contactModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="modal-head">
+      <div class="modal-title" id="contactTitle">상담 신청</div>
+      <button class="modal-close" type="button" data-close-form="true">✕</button>
+    </div>
+    <form id="contactForm" action="https://formspree.io/f/xyknjvzq" method="POST">
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="name">이름</label>
+          <input id="name" name="name" type="text" required placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-row">
+          <label for="email">이메일</label>
+          <input id="email" name="email" type="email" required placeholder="email@company.com">
+        </div>
+        <div class="form-row">
+          <label for="company">회사/팀</label>
+          <input id="company" name="company" type="text" placeholder="회사명을 입력하세요">
+        </div>
+        <div class="form-row">
+          <label for="role">역할</label>
+          <select id="role" name="role">
+            <option value="">선택하세요</option>
+            <option value="founder">Founder / CEO</option>
+            <option value="pm">PM / PO</option>
+            <option value="growth">Growth / Marketing</option>
+            <option value="investor">Investor</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="message">문의 내용</label>
+          <textarea id="message" name="message" placeholder="어떤 점이 궁금하신가요?"></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-submit" type="submit">제출하기</button>
+          <button class="btn-cancel" type="button" data-close-form="true">닫기</button>
+        </div>
+        <div class="form-status" id="formStatus"></div>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -1484,6 +1664,20 @@ function trackEvent(name, params = {}) {
   if (typeof gtag === 'function') gtag('event', name, params);
 }
 
+function openContactForm() {
+  const modal = document.getElementById('contactModal');
+  if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  trackEvent('form_open', { form: 'contact' });
+}
+function closeContactForm() {
+  const modal = document.getElementById('contactModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const ctas = [
     { selector: '.btn-full', cta: 'start_portfolio_analysis' },
@@ -1500,6 +1694,51 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.qa-send-btn').forEach(el => {
     el.addEventListener('click', () => trackEvent('qa_send', { source: 'button' }));
   });
+
+  document.querySelectorAll('[data-open-form="true"]').forEach(el => {
+    el.addEventListener('click', openContactForm);
+  });
+  document.querySelectorAll('[data-close-form="true"]').forEach(el => {
+    el.addEventListener('click', closeContactForm);
+  });
+  const modal = document.getElementById('contactModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeContactForm();
+    });
+  }
+
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector('.btn-submit');
+      if (submitBtn) submitBtn.disabled = true;
+      if (status) status.textContent = '전송 중입니다...';
+      trackEvent('form_submit', { form: 'contact' });
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          if (status) status.textContent = '제출 완료! 곧 연락드릴게요.';
+          trackEvent('form_success', { form: 'contact' });
+          form.reset();
+        } else {
+          if (status) status.textContent = '전송 실패. 잠시 후 다시 시도해 주세요.';
+          trackEvent('form_error', { form: 'contact', status: res.status });
+        }
+      } catch (err) {
+        if (status) status.textContent = '네트워크 오류입니다. 다시 시도해 주세요.';
+        trackEvent('form_error', { form: 'contact', status: 'network' });
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
 });
 </script>
 </body>
